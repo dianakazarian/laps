@@ -1,0 +1,111 @@
+{
+  "name": "course-notes-preview",
+  "displayName": "Course Notes Preview",
+  "description": "A live, side-by-side preview for math-heavy Markdown course notes.",
+  "version": "0.2.0",
+  "publisher": "local-notes",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "markdown",
+    "mathjax",
+    "notes",
+    "preview"
+  ],
+  "main": "./src/extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "The preview intentionally renders raw HTML and CSS from the open workspace."
+    }
+  },
+  "activationEvents": [
+    "onCommand:courseNotesPreview.openPreview",
+    "onCommand:courseNotesPreview.refreshPreview",
+    "onLanguage:markdown"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "courseNotesPreview.openPreview",
+        "title": "Open Preview to the Side",
+        "category": "Course Notes"
+      },
+      {
+        "command": "courseNotesPreview.refreshPreview",
+        "title": "Refresh Preview",
+        "category": "Course Notes"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "courseNotesPreview.openPreview",
+          "when": "resourceLangId == markdown",
+          "group": "navigation@99"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "courseNotesPreview.openPreview",
+          "when": "resourceLangId == markdown",
+          "group": "navigation@99"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Course Notes Preview",
+      "properties": {
+        "courseNotesPreview.noteFiles": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Markdown files in section order, relative to the workspace root. This controls automatic theorem numbering in each file."
+        },
+        "courseNotesPreview.workspaceCssFiles": {
+          "type": "array",
+          "default": [
+            "styles.css"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "CSS files to apply to the preview, relative to the workspace root."
+        },
+        "courseNotesPreview.autoNumberCallouts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically number theorem, definition, lemma, proposition, corollary, example, and remark boxes by section."
+        },
+        "courseNotesPreview.openCollapsedProofs": {
+          "type": "boolean",
+          "default": false,
+          "description": "Open collapsible proof and subproof blocks when they first appear in the preview."
+        },
+        "courseNotesPreview.updateDelay": {
+          "type": "integer",
+          "default": 120,
+          "minimum": 25,
+          "maximum": 1000,
+          "description": "Milliseconds to wait after an edit before refreshing the preview."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "check": "node --check src/extension.js && node --check media/preview.js",
+    "package": "vsce package --out course-notes-preview-0.2.0.vsix",
+    "install:local": "code --install-extension course-notes-preview-0.2.0.vsix --force"
+  },
+  "devDependencies": {}
+}
