@@ -1,8 +1,8 @@
 "use strict";
 
 const ORDERED_NOTES = [
-  { file: "section1.md", title: "Section 1" },
-  { file: "section2.md", title: "Section 2" }
+  { file: "session1.md", title: "Session 1" },
+  { file: "session2.md", title: "Session 2" }
 ];
 
 const CALLOUT_TYPES = [

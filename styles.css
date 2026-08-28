@@ -576,3 +576,27 @@ blockquote {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Tables */
+#content table {
+  width: 100%;
+  margin: var(--flow-space) 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+#content th,
+#content td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+#content th {
+  background: var(--box);
+  font-weight: 700;
+}
+
+#content tbody tr:nth-child(even) {
+  background: var(--line-soft);
+}
