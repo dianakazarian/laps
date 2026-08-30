@@ -1,4 +1,4 @@
-_Overview: We introduce vectors and matrices as the raw material of political science data. We then learn how to operate the heavy machinery that combines and manipulates them._
+_Overview: We introduce vectors and matrices as the raw material of (political science) data. We then learn how to operate the heavy machinery that transforms them._
 
 ### Motivation: Why Study Linear Algebra?
 
