@@ -322,7 +322,7 @@ $$
 Matrix multiplication is only defined when the number of columns in the first matrix matches the number of rows in the second.
 </div>
 
-### The Transpose
+### Matrix Operations: The Transpose
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Transpose</span></span>
 The transpose of an $m \times n$ matrix $M$, written $M^\top$, is the $n \times m$ matrix obtained by turning $M$'s rows into columns (equivalently, its columns into rows): $(M^\top)_{ij} = M_{ji}$.
@@ -342,24 +342,34 @@ $M$ is $3\times 2$; $M^\top$ is $2\times 3$.
 Certain matrices come up often enough, and behave predictably enough, that they are worth naming individually.
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Square matrix</span></span>
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Square Matrix</span></span>
 A matrix is square if it has the same number of rows as columns ($m = n$). Many of the operations later in this course (e.g., inverses, determinants) are only defined for square matrices.
 </div>
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Diagonal matrix</span></span>
-A square matrix whose only nonzero entries lie on the main diagonal (top-left to bottom-right):
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Diagonal Matrix</span></span>
+An $n \times n$ matrix whose only nonzero entries lie on the main diagonal (top-left to bottom-right):
 $$
-D = \begin{bmatrix} d_1 & 0 & 0 \\ 0 & d_2 & 0 \\ 0 & 0 & d_3 \end{bmatrix}
+D = \begin{bmatrix}
+d_1 & 0 & \cdots & 0 \\
+0 & d_2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & d_n
+\end{bmatrix}
 $$
-Multiplying a vector by a diagonal matrix simply rescales each entry independently — $D\mathbf{v}$ has $i$-th entry $d_i v_i$, with no mixing across entries.
+Equivalently, $D_{ij} = 0$ whenever $i \neq j$. Multiplying a vector by a diagonal matrix simply rescales each entry independently.
 </div>
 
 <div class="callout definition">
-<span class="label"><span ="callout-type">Definition</span> <span class="callout-title">Identity Matrix</span></span>
-The diagonal matrix with every $d_i = 1$, denoted $I$:
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Identity Matrix</span></span>
+The $n \times n$ diagonal matrix with every $d_i = 1$, denoted $I$ (or $I_n$ when the dimension needs to be made explicit):
 $$
-I = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+I = \begin{bmatrix}
+1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 1
+\end{bmatrix}
 $$
 $I$ satisfies $IM = M$ and $MI = M$ for any compatible matrix $M$ — it plays the same role among matrices that the number $1$ plays among ordinary numbers.
 </div>
