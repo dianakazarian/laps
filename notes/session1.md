@@ -1,7 +1,5 @@
 _Overview: Introduction of the section content._
 
-## Session 1
-
 ### Motivation: Why Study Linear Algebra?
 
 Many questions in political science result from a conviction that multiple things are related to one another. A scholar specializing in the USSR, for example, might notice that the countries of the South Caucasus (Armenia, Azerbaijan, and Georgia), have both weak economies and weak democracies, while the countries of the Baltics (Estonia, Latvia, and Lithuania), have strong(er) economies and strong(er) democracies. He has arrived at one of the classic questions in comparative politics: Why does sustained economic growth seem to increase the likelihood of democratization?
@@ -92,7 +90,7 @@ $$
 $A$ is $6 \times 3$: six rows (one per country), three columns (one per variable). The entry $a_{42} = 9$ is the value in row 4, column 2 (Estonia's EU integration score).
 
 <div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span> <span class="callout-num">1.2</span></span>
+<span class="label"><span class="callout-type">Remark</span></span>
 A matrix is a collection of vectors, side by side. $A$'s three columns are three vectors in $\mathbb{R}^6$; $A$'s six rows are six vectors in $\mathbb{R}^3$. A vector, in fact, is just a matrix with only one column ($n=1$), which is why it's common to see a vector written as an $n \times 1$ matrix.
 </div>
 
@@ -111,17 +109,22 @@ Addition is only defined when $\mathbf{u}$ and $\mathbf{v}$ have the same number
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span> Vector Addition</span>
-Take GDP Growth and EU Integration as two column vectors from $A$:
+Call the GDP Growth and EU Integration column vectors $\mathbf{x}_1$ and $\mathbf{x}_2$, respectively, and add them together.
+
+<details class="collapsible">
+<summary>Solution</summary>
+
 $$
 \mathbf{x}_1 = \begin{bmatrix} 3 \\ 4 \\ 3 \\ 7 \\ 6 \\ 7 \end{bmatrix}, \qquad
 \mathbf{x}_2 = \begin{bmatrix} 2 \\ 1 \\ 3 \\ 9 \\ 8 \\ 8 \end{bmatrix}
 $$
-Then
 $$
-\mathbf{x}_1 + \mathbf{x}_2 = \begin{bmatrix} 5 \\ 5 \\ 6 \\ 16 \\ 14 \\ 15 \end{bmatrix}
+\implies \mathbf{x}_1 + \mathbf{x}_2 = \begin{bmatrix} 5 \\ 5 \\ 6 \\ 16 \\ 14 \\ 15 \end{bmatrix}
 $$
 This is a real (if crude) composite score: each country's growth and integration values summed together. Whether that sum is a *meaningful* quantity is a modeling question, not a mathematical one; the operation itself is unambiguous.
 </div>
+</div>
+</details>
 
 A vector can also be rescaled by an ordinary number.
 
