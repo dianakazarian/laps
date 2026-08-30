@@ -366,7 +366,7 @@ $I$ satisfies $IM = M$ and $MI = M$ for any compatible matrix $M$ — it plays t
 
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Symmetric Matrix</span></span>
-A square matrix $S$ satisfying $S^\top = S$ — its entries are mirrored across the main diagonal, $S_{ij} = S_{ji}$ for every $i,j$.
+A square matrix $S$ satisfying $S^\top = S$. Its entries are mirrored across the main diagonal, $S_{ij} = S_{ji}$ for every $i,j$.
 </div>
 
 <div class="callout example">
