@@ -379,6 +379,6 @@ This will matter directly once we start combining transposes with matrix multipl
 </div>
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Zero matrix</span></span>
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Zero Matrix</span></span>
 The matrix with every entry equal to $0$, denoted $\mathbf{0}$. It satisfies $M + \mathbf{0} = M$ and $M\mathbf{0} = \mathbf{0}$.
 </div>
