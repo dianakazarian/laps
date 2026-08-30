@@ -190,7 +190,7 @@ This is simply the dot product of a vector with itself (square-rooted). It is a 
 </div>
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span>  <span class="callout-title">Dot products and Angles</span></span>
+<span class="label"><span class="callout-type">Definition</span>  <span class="callout-title">Dot Products and Angles</span></span>
 For any two vectors $\mathbf{u}, \mathbf{v}$,
 $$
 \mathbf{u} \cdot \mathbf{v} = \|\mathbf{u}\|\|\mathbf{v}\|\cos\theta
