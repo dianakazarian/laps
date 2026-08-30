@@ -1,4 +1,4 @@
-_Overview: Introduction of the section content._
+_Overview: We introduce vectors and matrices as the raw material of political science data. We then learn how to operate the heavy machinery that combines and manipulates them._
 
 ### Motivation: Why Study Linear Algebra?
 
@@ -186,11 +186,11 @@ The norm (or length) of a vector $\mathbf{v}$ is
 $$
 \|\mathbf{v}\| = \sqrt{\mathbf{v} \cdot \mathbf{v}} = \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2}
 $$
-This is simply the dot product of a vector with itself, square-rooted — a direct generalization of the Pythagorean theorem to $n$ dimensions.
+This is simply the dot product of a vector with itself (square-rooted). It is a direct generalization of the Pythagorean theorem to $n$ dimensions.
 </div>
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span>  <span class="callout-title">Dot product and angle</span></span>
+<span class="label"><span class="callout-type">Definition</span>  <span class="callout-title">Dot products and Angles</span></span>
 For any two vectors $\mathbf{u}, \mathbf{v}$,
 $$
 \mathbf{u} \cdot \mathbf{v} = \|\mathbf{u}\|\|\mathbf{v}\|\cos\theta
@@ -201,14 +201,16 @@ $$
 $$
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span> </span>
+
 This is what the dot product is really measuring: not just a weighted sum, but how aligned two vectors are. $\cos\theta$ close to $1$ means the vectors point in nearly the same direction; close to $0$ means they're roughly perpendicular (unrelated); close to $-1$ means they point in nearly opposite directions.
-</div>
+
 
 <div class="callout example">
-<span class="label"><span class="callout-type">Example</span> <span class="callout-title">How aligned are growth and democracy?</span></span>
-Take the GDP growth and democracy score columns of $A$:
+<span class="label"><span class="callout-type">Example</span> <span class="callout-title">How Aligned are Growth and Democracy?</span></span>
+Calculate the angle between the GDP Growth and Democracy Score columns of $A$.
+
+<details class="collapsible">
+<summary>Solution</summary>
 $$
 \mathbf{x}_1 = \begin{bmatrix} 3 \\ 4 \\ 3 \\ 7 \\ 6 \\ 7 \end{bmatrix}, \qquad
 \mathbf{x}_2 = \begin{bmatrix} 3 \\ 2 \\ 4 \\ 8 \\ 7 \\ 8 \end{bmatrix}
@@ -223,12 +225,12 @@ $$
 $$
 \cos\theta = \frac{183}{(12.96)(14.35)} \approx 0.984
 $$
-This corresponds to an angle of about $10^\circ$, meaning the two vectors point in nearly the same direction. Geometrically, this is what it looks like for two variables to move together: as columns of numbers, growth and democracy trace out almost the same shape across the six countries.
+We take the inverse cosine to see that this corresponds to an angle of about $10^\circ$, meaning the two vectors point in nearly the same direction. Geometrically, this is what it looks like for two variables to move together: as columns of numbers, growth and democracy trace out almost the same shape across the six countries.
 </div>
 
 <div class="callout remark">
 <span class="label"><span class="callout-type">Remark</span></span>
-This is not a coincidence, and not unrelated to statistics you may already know: $\cos\theta$ between two variables' columns, once each column has been centered (its mean subtracted off), is exactly the Pearson correlation coefficient. The geometric picture and the familiar statistical one are the same object, viewed two ways.
+This is not a coincidence, and not unrelated to statistics you may already know: $\cos\theta$ between two variables' columns, once each column has been centered (its mean subtracted off), is exactly the Pearson correlation coefficient.
 </div>
 
 ### Matrix-Vector Multiplication
@@ -288,23 +290,23 @@ $$
 Notice the third entry, 9 (Georgia's composite score) matches Example 1.4 exactly. Nothing new was computed; six dot products that we'd otherwise have written out separately were performed in one line, against the same weight vector $\mathbf{w}$.
 </div>
 
-### Matrix-matrix multiplication
+### Matrix-Matrix Multiplication
 
-Matrix-vector multiplication ($M\mathbf{w}$) applies one weight vector to every row of $M$ at once. A natural next question: what if we wanted to try *several* weight vectors simultaneously — say, one composite index that weights growth twice as heavily as integration, and a second index that weights them equally?
+Matrix-vector multiplication ($M\mathbf{w}$) applies one weight vector to every row of $M$ at once. A natural next question: what if we wanted to try *several* weight vectors simultaneously—for example, one composite index that weights growth twice as heavily as integration, and a second index that weights them equally?
 
 Instead of computing $M\mathbf{w}_1$ and $M\mathbf{w}_2$ separately, stack the two weight vectors side by side as columns of a matrix $W$, and apply both at once.
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-num">1.9</span>: <span class="callout-title">Matrix-matrix multiplication</span></span>
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Matrix-Matrix Multiplication</span></span>
 For an $m \times n$ matrix $M$ and an $n \times p$ matrix $W$, the product $MW$ is the $m \times p$ matrix whose $(i,k)$ entry is the dot product of $M$'s $i$-th row with $W$'s $k$-th column:
 $$
 (MW)_{ik} = \sum_{j=1}^n M_{ij}W_{jk}
 $$
-Each column of $MW$ is exactly what matrix-vector multiplication (Definition 1.8) would have produced using that column of $W$ alone. Multiplying by a matrix is nothing more than multiplying by several vectors, side by side, at once.
+Each column of $MW$ is exactly what matrix-vector multiplication would have produced using that column of $W$ alone. Multiplying by a matrix is nothing more than multiplying by several vectors, side by side, at once.
 </div>
 
 <div class="callout example">
-<span class="label"><span class="callout-type">Example</span> <span class="callout-num">1.8</span>: <span class="callout-title">Two composite indices at once</span></span>
+<span class="label"><span class="callout-type">Example</span> <span class="callout-title">Two Composite Indices, At Once</span></span>
 Take $M$ (growth and integration, from before) and let $W$'s two columns be the two weighting schemes:
 $$
 W = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}
@@ -313,53 +315,70 @@ $$
 $$
 MW = \begin{bmatrix} 3 & 2 \\ 4 & 1 \\ 3 & 3 \\ 7 & 9 \\ 6 & 8 \\ 7 & 8 \end{bmatrix}\begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 8 & 5 \\ 9 & 5 \\ 9 & 6 \\ 23 & 16 \\ 20 & 14 \\ 22 & 15 \end{bmatrix}
 $$
-The first column matches Example 1.6 exactly — Georgia's entry is still 9 — and the second column is the equal-weighting composite, computed for all six countries in the same pass.
 </div>
 
 <div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span> <span class="callout-num">1.9</span></span>
-Matrix multiplication is only defined when the number of columns in the first matrix matches the number of rows in the second — each row of $M$ needs a matching entry for each row of $W$ to dot against, same requirement as matrix-vector multiplication, just applied column by column.
+<span class="label"><span class="callout-type">Remark</span></span>
+Matrix multiplication is only defined when the number of columns in the first matrix matches the number of rows in the second.
 </div>
 
 ### The Transpose
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-num">1.10</span>: <span class="callout-title">Transpose</span></span>
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Transpose</span></span>
 The transpose of an $m \times n$ matrix $M$, written $M^\top$, is the $n \times m$ matrix obtained by turning $M$'s rows into columns (equivalently, its columns into rows): $(M^\top)_{ij} = M_{ji}$.
 </div>
 
 <div class="callout example">
-<span class="label"><span class="callout-type">Example</span> <span class="callout-num">1.9</span></span>
+<span class="label"><span class="callout-type">Example</span> </span>
 $$
 M = \begin{bmatrix} 3 & 2 \\ 4 & 1 \\ 3 & 3 \end{bmatrix}, \qquad M^\top = \begin{bmatrix} 3 & 4 & 3 \\ 2 & 1 & 3 \end{bmatrix}
 $$
 $M$ is $3\times 2$; $M^\top$ is $2\times 3$.
 </div>
 
-The transpose earns its place here for a concrete reason: it lets us compute *every* pairwise relationship among a set of variables in a single matrix product.
 
-<div class="callout example">
-<span class="label"><span class="callout-type">Example</span> <span class="callout-num">1.10</span>: <span class="callout-title">All pairwise dot products, at once</span></span>
-Let $\tilde{X}$ be the matrix whose three columns are the centered versions of growth, integration, and democracy score (Definition 1.8, applied column by column). Consider $\tilde{X}^\top\tilde{X}$. $\tilde{X}$ is $6\times 3$, so $\tilde{X}^\top$ is $3\times 6$, and the product $\tilde{X}^\top\tilde{X}$ is $3\times 3$. Its $(i,j)$ entry is row $i$ of $\tilde{X}^\top$ — column $i$ of $\tilde{X}$ — dotted with column $j$ of $\tilde{X}$:
-$$
-(\tilde{X}^\top\tilde{X})_{ij} = \tilde{\mathbf{x}}_i \cdot \tilde{\mathbf{x}}_j
-$$
-Every entry of this $3\times 3$ matrix is exactly the numerator from Proposition 1.1 — one dot product of centered columns per pair of variables, including each variable against itself ($i=j$, which gives $\|\tilde{\mathbf{x}}_i\|^2$). One matrix multiplication produces every pairwise relationship among growth, integration, and democracy score simultaneously.
-</div>
+### Special Matrices
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span> <span class="callout-num">1.10</span></span>
-Notice $(\tilde{X}^\top\tilde{X})_{ij} = (\tilde{X}^\top\tilde{X})_{ji}$ — the matrix is symmetric across its diagonal, because $\tilde{\mathbf{x}}_i\cdot\tilde{\mathbf{x}}_j = \tilde{\mathbf{x}}_j\cdot\tilde{\mathbf{x}}_i$ always. This is not a coincidence specific to this example: $M^\top M$ is symmetric for <em>any</em> matrix $M$, since $(M^\top M)^\top = M^\top M^{\top\top} = M^\top M$. A matrix $S$ satisfying $S^\top = S$ is called symmetric.
+Certain matrices come up often enough, and behave predictably enough, that they are worth naming individually.
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Square matrix</span></span>
+A matrix is square if it has the same number of rows as columns ($m = n$). Many of the operations later in this course (e.g., inverses, determinants) are only defined for square matrices.
 </div>
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-num">1.11</span>: <span class="callout-title">Identity matrix</span></span>
-The $n\times n$ identity matrix $I$ has $1$s down its diagonal and $0$s elsewhere. It satisfies $IM = M$ and $MI = M$ for any compatible matrix $M$ — it plays the same role among matrices that the number $1$ plays among ordinary numbers.
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Diagonal matrix</span></span>
+A square matrix whose only nonzero entries lie on the main diagonal (top-left to bottom-right):
+$$
+D = \begin{bmatrix} d_1 & 0 & 0 \\ 0 & d_2 & 0 \\ 0 & 0 & d_3 \end{bmatrix}
+$$
+Multiplying a vector by a diagonal matrix simply rescales each entry independently — $D\mathbf{v}$ has $i$-th entry $d_i v_i$, with no mixing across entries.
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span> <span class="callout-num">1.11</span></span>
-The identity matrix will matter in session 2 for a specific reason: it's what defines what an <em>inverse</em> is. Just as $a^{-1}a = 1$ for a nonzero number $a$, we'll ask whether some matrix $M^{-1}$ exists satisfying $M^{-1}M = I$ — and, unlike with ordinary numbers, the answer will sometimes be no.
+<div class="callout definition">
+<span class="label"><span ="callout-type">Definition</span> <span class="callout-title">Identity Matrix</span></span>
+The diagonal matrix with every $d_i = 1$, denoted $I$:
+$$
+I = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+$$
+$I$ satisfies $IM = M$ and $MI = M$ for any compatible matrix $M$ — it plays the same role among matrices that the number $1$ plays among ordinary numbers.
 </div>
 
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Symmetric Matrix</span></span>
+A square matrix $S$ satisfying $S^\top = S$ — its entries are mirrored across the main diagonal, $S_{ij} = S_{ji}$ for every $i,j$.
+</div>
 
-### Closing the Loop
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+For any matrix $M$ (square or not), $M^\top M$ is always symmetric:
+$$
+(M^\top M)^\top = M^\top M^{\top\top} = M^\top M
+$$
+This will matter directly once we start combining transposes with matrix multiplication later in the course.
+</div>
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Zero matrix</span></span>
+The matrix with every entry equal to $0$, denoted $\mathbf{0}$. It satisfies $M + \mathbf{0} = M$ and $M\mathbf{0} = \mathbf{0}$.
+</div>
