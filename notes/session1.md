@@ -1,6 +1,6 @@
 _Overview: We introduce vectors and matrices as the raw material of (political science) data. We then learn how to operate the heavy machinery that transforms them._
 
-### Motivation: Why Study Linear Algebra?
+## Motivation: Why Study Linear Algebra?
 
 Many questions in political science result from a conviction that multiple things are related to one another. A scholar specializing in the USSR, for example, might notice that the countries of the South Caucasus (Armenia, Azerbaijan, and Georgia), have both weak economies and weak democracies, while the countries of the Baltics (Estonia, Latvia, and Lithuania), have strong(er) economies and strong(er) democracies. He has arrived at one of the classic questions in comparative politics: Why does sustained economic growth seem to increase the likelihood of democratization?
 
@@ -47,7 +47,7 @@ This turns out to matter a great deal. The scholar's three questions about the w
 
 So the plan for the next four sessions is this: before we can answer *why* growth and democracy move together, or *whether* EU integration explains it away, we need a working vocabulary for objects like $A$ and its columns. Vectors and matrices are the two fundamental objects of linear algebra. Once we know how to manipulate them, combine them, and eventually solve for unknowns using them, we will be able to answer precisely how much weight each column deserves in explaining the last one.
 
-### Vectors
+## Vectors
 
 Recall the matrix $A$ from before: six countries, three columns of numbers. Take just one column on its own, say the GDP growth column:
 
@@ -66,12 +66,12 @@ $$
 \mathbf{a}_{\text{Armenia}} = \begin{bmatrix} 3 \\ 2 \\ 3 \end{bmatrix}
 $$
 
-### Matrices
+## Matrices
 
 We have already met $A$: the six-country, three-variable table from the introduction. Now, more precisely:
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-num">1.2</span>: <span class="callout-title">Matrix</span></span>
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Matrix</span></span>
 A matrix is a rectangular array of numbers, arranged in rows and columns. We write matrices as uppercase letters ($A$), and refer to the size of a matrix as $m \times n$, meaning $m$ rows and $n$ columns. The entry in row $i$, column $j$ is written $a_{ij}$.
 </div>
 
@@ -94,12 +94,12 @@ $A$ is $6 \times 3$: six rows (one per country), three columns (one per variable
 A matrix is a collection of vectors, side by side. $A$'s three columns are three vectors in $\mathbb{R}^6$; $A$'s six rows are six vectors in $\mathbb{R}^3$. A vector, in fact, is just a matrix with only one column ($n=1$), which is why it's common to see a vector written as an $n \times 1$ matrix.
 </div>
 
-### Vector Operations: Addition and Scalar Multiplication
+## Vector Operations: Addition and Scalar Multiplication
 
 Two vectors of the same dimension can be added, entry by entry.
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-num">1.3</span>: <span class="callout-title">Vector Addition</span></span>
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Vector Addition</span></span>
 If $\mathbf{u} = \begin{bmatrix} u_1 \\ \vdots \\ u_n \end{bmatrix}$ and $\mathbf{v} = \begin{bmatrix} v_1 \\ \vdots \\ v_n \end{bmatrix}$, then
 $$
 \mathbf{u} + \mathbf{v} = \begin{bmatrix} u_1 + v_1 \\ \vdots \\ u_n + v_n \end{bmatrix}
@@ -141,7 +141,7 @@ $$
 If the democracy score were instead reported on a 0–20 scale rather than 0–10, every entry would simply double: $2\mathbf{y}$, where $\mathbf{y}$ is the original democracy score column. Rescaling a variable (e.g., converting units, standardizing, normalizing to a 0–1 range) is scalar multiplication. We could also combine this with addition, to shift the values as well as stretch them. Once again, this is more a modeling question than a mathematical one.
 </div>
 
-### The Dot Product
+## The Dot Product
 
 
 <div class="callout definition">
@@ -176,7 +176,7 @@ $$
 Every entry of the data vector got multiplied by its corresponding weight, and the results were summed into a single composite number for Georgia. This is the pattern to hold onto: a dot product between a weight vector and a data vector produces one weighted combination.
 </div>
 
-### Geometric Implications of the Dot Product
+## Geometric Implications of the Dot Product
 
 Beyond serving as a weighted sum, the dot product also carries information about how two vectors relate to each other in space. To see this, we first need a way to measure a vector's own size.
 
@@ -233,7 +233,7 @@ We take the inverse cosine to see that this corresponds to an angle of about $10
 This is not a coincidence, and not unrelated to statistics you may already know: $\cos\theta$ between two variables' columns, once each column has been centered (its mean subtracted off), is exactly the Pearson correlation coefficient.
 </div>
 
-### Matrix-Vector Multiplication
+## Matrix-Vector Multiplication
 
 Example 1.4 computed a weighted composite score for Georgia alone. But our scholar has six countries, not just one, and recomputing that dot product by hand, country by country, is exactly the kind of repetition vectors and matrices exist to eliminate.
 
@@ -290,7 +290,7 @@ $$
 Notice the third entry, 9 (Georgia's composite score) matches Example 1.4 exactly. Nothing new was computed; six dot products that we'd otherwise have written out separately were performed in one line, against the same weight vector $\mathbf{w}$.
 </div>
 
-### Matrix-Matrix Multiplication
+## Matrix-Matrix Multiplication
 
 Matrix-vector multiplication ($M\mathbf{w}$) applies one weight vector to every row of $M$ at once. A natural next question: what if we wanted to try *several* weight vectors simultaneously—for example, one composite index that weights growth twice as heavily as integration, and a second index that weights them equally?
 
@@ -322,7 +322,7 @@ $$
 Matrix multiplication is only defined when the number of columns in the first matrix matches the number of rows in the second.
 </div>
 
-### Matrix Operations: The Transpose
+## Matrix Operations: The Transpose
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Transpose</span></span>
 The transpose of an $m \times n$ matrix $M$, written $M^\top$, is the $n \times m$ matrix obtained by turning $M$'s rows into columns (equivalently, its columns into rows): $(M^\top)_{ij} = M_{ji}$.
@@ -337,9 +337,28 @@ $M$ is $3\times 2$; $M^\top$ is $2\times 3$.
 </div>
 
 
-### Special Matrices
+## Special Classes of Matrices
 
 Certain matrices come up often enough, and behave predictably enough, that they are worth naming individually.
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Identity Matrix</span></span>
+The $n \times n$ diagonal matrix with every $d_i = 1$, denoted $I$ (or $I_n$ when the dimension needs to be made explicit):
+$$
+I = \begin{bmatrix}
+1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 1
+\end{bmatrix}
+$$
+$I$ satisfies $IM = M$ and $MI = M$ for any compatible matrix $M$. It plays the same role among matrices that the number $1$ plays among ordinary numbers.
+</div>
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Zero Matrix</span></span>
+The matrix with every entry equal to $0$, denoted $\mathbf{0}$. It satisfies $M + \mathbf{0} = M$ and $M\mathbf{0} = \mathbf{0}$.
+</div>
 
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Square Matrix</span></span>
@@ -361,20 +380,6 @@ Equivalently, $D_{ij} = 0$ whenever $i \neq j$. Multiplying a vector by a diagon
 </div>
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Identity Matrix</span></span>
-The $n \times n$ diagonal matrix with every $d_i = 1$, denoted $I$ (or $I_n$ when the dimension needs to be made explicit):
-$$
-I = \begin{bmatrix}
-1 & 0 & \cdots & 0 \\
-0 & 1 & \cdots & 0 \\
-\vdots & \vdots & \ddots & \vdots \\
-0 & 0 & \cdots & 1
-\end{bmatrix}
-$$
-$I$ satisfies $IM = M$ and $MI = M$ for any compatible matrix $M$ — it plays the same role among matrices that the number $1$ plays among ordinary numbers.
-</div>
-
-<div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Symmetric Matrix</span></span>
 A square matrix $S$ satisfying $S^\top = S$. Its entries are mirrored across the main diagonal, $S_{ij} = S_{ji}$ for every $i,j$.
 </div>
@@ -383,12 +388,7 @@ A square matrix $S$ satisfying $S^\top = S$. Its entries are mirrored across the
 <span class="label"><span class="callout-type">Example</span></span>
 For any matrix $M$ (square or not), $M^\top M$ is always symmetric:
 $$
-(M^\top M)^\top = M^\top M^{\top\top} = M^\top M
+(M^\top M)^\top = M^\top (M^{\top})^{\top} = M^\top M
 $$
 This will matter directly once we start combining transposes with matrix multiplication later in the course.
-</div>
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Zero Matrix</span></span>
-The matrix with every entry equal to $0$, denoted $\mathbf{0}$. It satisfies $M + \mathbf{0} = M$ and $M\mathbf{0} = \mathbf{0}$.
 </div>
