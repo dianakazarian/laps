@@ -160,6 +160,7 @@ async function loadAll() {
   const parts = await Promise.all(ORDERED_NOTES.map(loadNote));
   content.innerHTML = parts.join("\n");
 
+  wrapCollapsibleContent();
   buildToc();
   autoNumberCallouts();
 
@@ -170,6 +171,22 @@ async function loadAll() {
       console.error("MathJax could not typeset the notes.", error);
     }
   }
+}
+
+function wrapCollapsibleContent() {
+  byId("content").querySelectorAll(".collapsible").forEach((details) => {
+    if (details.querySelector(":scope > .collapsible__content")) return;
+
+    const summary = details.querySelector(":scope > summary");
+    const wrapper = document.createElement("div");
+    wrapper.className = "collapsible__content";
+
+    [...details.childNodes]
+      .filter((node) => node !== summary)
+      .forEach((node) => wrapper.appendChild(node));
+
+    details.appendChild(wrapper);
+  });
 }
 
 function buildToc() {

@@ -327,6 +327,14 @@ Matrix multiplication is only defined when the number of columns in the first ma
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Transpose</span></span>
 The transpose of an $m \times n$ matrix $M$, written $M^\top$, is the $n \times m$ matrix obtained by turning $M$'s rows into columns (equivalently, its columns into rows): $(M^\top)_{ij} = M_{ji}$.
 </div>
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+The transpose reverses order when applied to a product: for compatible matrices $A$ and $B$,
+$$
+(AB)^\top = B^\top A^\top
+$$
+Notice the swap: it's not $A^\top B^\top$. This will matter later whenever we need to transpose an expression built out of several matrices multiplied together (for instance, unpacking something like $(MW)^\top$ requires transposing $W$ and $M$ individually, and reversing their order).
+</div>
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span> </span>
