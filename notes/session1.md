@@ -60,7 +60,7 @@ $$
 A vector is an ordered list of numbers. We write vectors as lowercase bold letters ($\mathbf{x}$) and their individual entries with subscripts ($x_1, x_2, \dots, x_n$). A vector with $n$ entries is said to have <em>dimension</em> $n$, or to live in $\mathbb{R}^n$.
 </div>
 
-$\mathbf{x}$ is simply the GDP growth column, isolated from the rest of the table. This is the first thing worth internalizing about vectors: in political science, a vector is very often just *one variable, across every observation in your dataset*. The democracy score column is a vector. The EU integration column is a vector. Even a single country's full profile (reading across a row instead of down a column) is a vector:
+The vector $\mathbf{x}$ is simply the GDP growth column, isolated from the rest of the table. This is the first thing worth internalizing about vectors: in political science, a vector is very often just *one variable, across every observation in your dataset*. The democracy score column is a vector. The EU integration column is a vector. Even a single country's full profile (reading across a row instead of down a column) is a vector:
 
 $$
 \mathbf{a}_{\text{Armenia}} = \begin{bmatrix} 3 \\ 2 \\ 3 \end{bmatrix}
