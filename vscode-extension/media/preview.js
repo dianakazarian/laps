@@ -442,6 +442,17 @@
     });
   }
 
+  function handleContentLinkClick(event) {
+  const anchor = event.target.closest("a[href]");
+  if (!anchor || !content.contains(anchor)) return;
+
+  const rawHref = anchor.getAttribute("href");
+  if (!rawHref || rawHref.startsWith("#")) return; // let in-page anchors behave normally
+
+  event.preventDefault();
+  vscode.postMessage({ type: "openLink", href: rawHref });
+}
+
   function revealPreview(message) {
     if (!isRevealMessage(message)) return;
     if (message.uri !== current.uri || message.version !== current.version) return;
@@ -586,5 +597,6 @@
   }, { passive: true });
 
   content.addEventListener("dblclick", handlePreviewDoubleClick);
+  content.addEventListener("click", handleContentLinkClick);
   vscode.postMessage({ type: "ready" });
 })();

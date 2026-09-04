@@ -240,17 +240,41 @@ class PreviewController {
   }
 
   async onWebviewMessage(message) {
-    if (!message || typeof message !== 'object' || this.disposed) return;
+  if (!message || typeof message !== 'object' || this.disposed) return;
 
-    if (message.type === 'ready') {
-      this.ready = true;
-      this.scheduleRender(0);
-      return;
-    }
-
-    if (message.type !== 'revealSource') return;
-    await this.revealSource(message);
+  if (message.type === 'ready') {
+    this.ready = true;
+    this.scheduleRender(0);
+    return;
   }
+
+  if (message.type === 'openLink') {
+    await this.openLink(message.href);
+    return;
+  }
+
+  if (message.type !== 'revealSource') return;
+  await this.revealSource(message);
+}
+
+async openLink(href) {
+  if (!href) return;
+
+  if (/^[a-z][a-z0-9+.-]*:/i.test(href)) {
+    // Has a scheme (http:, https:, mailto:, etc.) — open outside the editor
+    try {
+      await vscode.env.openExternal(vscode.Uri.parse(href));
+    } catch (_error) {
+      // ignore malformed external links
+    }
+    return;
+  }
+
+  if (!this.workspaceFolder) return;
+  const uri = resolveWorkspaceRelative(this.workspaceFolder, href);
+  if (!uri) return;
+  await vscode.commands.executeCommand('vscode.open', uri);
+}
 
   onEditorSelectionChanged(event) {
     if (this.disposed || !this.ready || event.selections.length !== 1) return;
@@ -598,3 +622,5 @@ function createNonce() {
 }
 
 module.exports = { activate, deactivate };
+
+

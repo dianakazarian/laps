@@ -1,5 +1,10 @@
 _Overview: We introduce vectors and matrices as the raw material of (political science) data. We then learn how to operate the heavy machinery that transforms them._
 
+<a class="resource-link" href="slides/laps_session_1.pdf" target="_blank" rel="noopener">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+  Session 1 Slides (.pdf)
+</a>
+
 ## Motivation: Why Study Linear Algebra?
 
 Many questions in political science result from a conviction that multiple things are related to one another. A scholar specializing in the USSR, for example, might notice that the countries of the South Caucasus (Armenia, Azerbaijan, and Georgia), have both weak economies and weak democracies, while the countries of the Baltics (Estonia, Latvia, and Lithuania), have strong(er) economies and strong(er) democracies. He has arrived at one of the classic questions in comparative politics: Why does sustained economic growth seem to increase the likelihood of democratization?
