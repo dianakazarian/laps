@@ -1,407 +1,280 @@
-_Overview: We introduce vectors and matrices as the raw material of (political science) data. We then learn how to operate the heavy machinery that transforms them._
+_Overview: Insert here._
 
+<!--
 <a class="resource-link" href="slides/laps_session_1.pdf" target="_blank" rel="noopener">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-  Session 1 Slides (.pdf)
+  Session 2 Slides
 </a>
+-->
 
-## Motivation: Why Study Linear Algebra?
-
-Many questions in political science result from a conviction that multiple things are related to one another. A scholar specializing in the USSR, for example, might notice that the countries of the South Caucasus (Armenia, Azerbaijan, and Georgia), have both weak economies and weak democracies, while the countries of the Baltics (Estonia, Latvia, and Lithuania), have strong(er) economies and strong(er) democracies. He has arrived at one of the classic questions in comparative politics: Why does sustained economic growth seem to increase the likelihood of democratization?
-
-
-But, this scholar notes, the Baltics and the South Caucasus also differ in a third way: proximity to the West. The Baltics were fast-tracked into EU accession; the South Caucasus states largely were not. So is economic growth really driving democratization, or are both being pulled along by a country's relationship with the West? At this point, the scholar may start collecting some preliminary data.
-
-<table>
-<thead>
-<tr><th>Country</th><th>Region</th><th>GDP Growth</th><th>EU Integration</th><th>Democracy Score</th></tr>
-</thead>
-<tbody>
-<tr><td>Armenia</td><td>South Caucasus</td><td>3</td><td>2</td><td>3</td></tr>
-<tr><td>Azerbaijan</td><td>South Caucasus</td><td>4</td><td>1</td><td>2</td></tr>
-<tr><td>Georgia</td><td>South Caucasus</td><td>3</td><td>3</td><td>4</td></tr>
-<tr><td>Estonia</td><td>Baltics</td><td>7</td><td>9</td><td>8</td></tr>
-<tr><td>Latvia</td><td>Baltics</td><td>6</td><td>8</td><td>7</td></tr>
-<tr><td>Lithuania</td><td>Baltics</td><td>7</td><td>8</td><td>8</td></tr>
-</tbody>
-</table>
-
-Ultimately, our scholar wants to know the following things:
-1. How much does **GDP Growth** influence **Democracy Score**?
-2. How much does **EU Integration** influence **Democracy Score**?
-3. How much does **GDP Growth** influence **Democracy Score**, when **EU Integration** is held constant?
-
-He should be patient. We will get there. In the meantime, take a look at the following object.
-
-$$
-A = 
-\begin{bmatrix}
-3 & 2 & 3 \\
-4 & 1 & 2 \\
-3 & 3 & 4 \\
-7 & 9 & 8 \\
-6 & 8 & 7 \\
-7 & 8 & 8
-\end{bmatrix}
-
-$$
-
-You will notice that $A$ contains exactly the numbers from the table above. Once we've stripped away the country names and the region labels, what remains is a rectangular grid of numbers, one row per country, one column per variable. This grid is called a **matrix**. It didn't require any new mathematics to produce; it was sitting inside the table the whole time! Indeed, all datasets in a tabular format are matrices.
-
-This turns out to matter a great deal. The scholar's three questions about the world are actually questions about this  matrix $A$. In particular: how do the *columns* of $A$ relate to one another? Does the growth column move together with the democracy column? And does that relationship survive once the EU integration column is accounted for? In order to obtain precise quantitative answers to questions like these, we need to be able to isolate a single column, combine columns together, and compare one column's movement against another's. A single column of a matrix, on its own, is exactly what we will soon call a **vector**.
-
-So the plan for the next four sessions is this: before we can answer *why* growth and democracy move together, or *whether* EU integration explains it away, we need a working vocabulary for objects like $A$ and its columns. Vectors and matrices are the two fundamental objects of linear algebra. Once we know how to manipulate them, combine them, and eventually solve for unknowns using them, we will be able to answer precisely how much weight each column deserves in explaining the last one.
-
-## Vectors
-
-Recall the matrix $A$ from before: six countries, three columns of numbers. Take just one column on its own, say the GDP growth column:
-
-$$
-\mathbf{x} = \begin{bmatrix} 3 \\ 4 \\ 3 \\ 7 \\ 6 \\ 7 \end{bmatrix}
-$$
+## Systems of Linear Equations
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span>  <span class="callout-title">Vector</span></span>
-A vector is an ordered list of numbers. We write vectors as lowercase bold letters ($\mathbf{x}$) and their individual entries with subscripts ($x_1, x_2, \dots, x_n$). A vector with $n$ entries is said to have <em>dimension</em> $n$, or to live in $\mathbb{R}^n$.
-</div>
-
-The vector $\mathbf{x}$ is simply the GDP growth column, isolated from the rest of the table. This is the first thing worth internalizing about vectors: in political science, a vector is very often just *one variable, across every observation in your dataset*. The democracy score column is a vector. The EU integration column is a vector. Even a single country's full profile (reading across a row instead of down a column) is a vector:
-
-$$
-\mathbf{a}_{\text{Armenia}} = \begin{bmatrix} 3 \\ 2 \\ 3 \end{bmatrix}
-$$
-
-## Matrices
-
-We have already met $A$: the six-country, three-variable table from the introduction. Now, more precisely:
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Matrix</span></span>
-A matrix is a rectangular array of numbers, arranged in rows and columns. We write matrices as uppercase letters ($A$), and refer to the size of a matrix as $m \times n$, meaning $m$ rows and $n$ columns. The entry in row $i$, column $j$ is written $a_{ij}$.
-</div>
-
-$$
-A = 
-\begin{bmatrix}
-3 & 2 & 3 \\
-4 & 1 & 2 \\
-3 & 3 & 4 \\
-7 & 9 & 8 \\
-6 & 8 & 7 \\
-7 & 8 & 8
-\end{bmatrix}
-$$
-
-$A$ is $6 \times 3$: six rows (one per country), three columns (one per variable). The entry $a_{42} = 9$ is the value in row 4, column 2 (Estonia's EU integration score).
-
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-A matrix is a collection of vectors, side by side. $A$'s three columns are three vectors in $\mathbb{R}^6$; $A$'s six rows are six vectors in $\mathbb{R}^3$. A vector, in fact, is just a matrix with only one column ($n=1$), which is why it's common to see a vector written as an $n \times 1$ matrix.
-</div>
-
-## Vector Operations: Addition and Scalar Multiplication
-
-Two vectors of the same dimension can be added, entry by entry.
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Vector Addition</span></span>
-If $\mathbf{u} = \begin{bmatrix} u_1 \\ \vdots \\ u_n \end{bmatrix}$ and $\mathbf{v} = \begin{bmatrix} v_1 \\ \vdots \\ v_n \end{bmatrix}$, then
-$$
-\mathbf{u} + \mathbf{v} = \begin{bmatrix} u_1 + v_1 \\ \vdots \\ u_n + v_n \end{bmatrix}
-$$
-Addition is only defined when $\mathbf{u}$ and $\mathbf{v}$ have the same number of entries.
-</div>
-
-<div class="callout example">
-<span class="label"><span class="callout-type">Example</span> Vector Addition</span>
-Call the GDP Growth and EU Integration column vectors $\mathbf{x}_1$ and $\mathbf{x}_2$, respectively, and add them together.
-
-<details class="collapsible">
-<summary>Solution</summary>
-
-$$
-\mathbf{x}_1 = \begin{bmatrix} 3 \\ 4 \\ 3 \\ 7 \\ 6 \\ 7 \end{bmatrix}, \qquad
-\mathbf{x}_2 = \begin{bmatrix} 2 \\ 1 \\ 3 \\ 9 \\ 8 \\ 8 \end{bmatrix}
-$$
-$$
-\implies \mathbf{x}_1 + \mathbf{x}_2 = \begin{bmatrix} 5 \\ 5 \\ 6 \\ 16 \\ 14 \\ 15 \end{bmatrix}
-$$
-This is a real (if crude) composite score: each country's growth and integration values summed together. Whether that sum is a *meaningful* quantity is a modeling question, not a mathematical one; the operation itself is unambiguous.
-</div>
-</div>
-</details>
-
-A vector can also be rescaled by an ordinary number.
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Scalar Multiplication</span></span>
-For a number $c$ (called a <em>scalar</em> to distinguish it from a vector) and a vector $\mathbf{v}$,
-$$
-c\mathbf{v} = \begin{bmatrix} cv_1 \\ \vdots \\ cv_n \end{bmatrix}
-$$
-</div>
-
-<div class="callout example">
-<span class="label"><span class="callout-type">Example</span> Scalar Multiplication</span>
-If the democracy score were instead reported on a 0–20 scale rather than 0–10, every entry would simply double: $2\mathbf{y}$, where $\mathbf{y}$ is the original democracy score column. Rescaling a variable (e.g., converting units, standardizing, normalizing to a 0–1 range) is scalar multiplication. We could also combine this with addition, to shift the values as well as stretch them. Once again, this is more a modeling question than a mathematical one.
-</div>
-
-## The Dot Product
-
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span>  <span class="callout-title">Dot Product</span></span>
-For two vectors of the same dimension, $\mathbf{u} = \begin{bmatrix} u_1 \\ \vdots \\ u_n \end{bmatrix}$ and $\mathbf{v} = \begin{bmatrix} v_1 \\ \vdots \\ v_n \end{bmatrix}$,
-$$
-\mathbf{u} \cdot \mathbf{v} = \sum_{i=1}^n u_iv_i = u_1v_1 + u_2v_2 + \cdots + u_nv_n
-$$
-Multiply corresponding entries, then add up the results. Like addition, the dot product is only defined when both vectors have the same number of entries.
-</div>
-
-<div class="callout example">
-<span class="label"><span class="callout-type">Example</span>  <span class="callout-title">A Weighted Composite</span></span>
-Calculate the dot product of the GDP Growth and EU Integration columns.
-<details class="collapsible">
-<summary>Solution</summary>
-$$
-\mathbf{x}_1 = \begin{bmatrix} 3 \\ 4 \\ 3 \\ 7 \\ 6 \\ 7 \end{bmatrix}, \qquad
-\mathbf{x}_2 = \begin{bmatrix} 2 \\ 1 \\ 3 \\ 9 \\ 8 \\ 8 \end{bmatrix}
-$$
-$$
-\mathbf{x}_1 \cdot \mathbf{x}_2 = (3)(2) + (4)(1) + (3)(3) + (7)(9) + (6)(8) + (7)(8) = 6+4+9+63+48+56 = 186
-$$
-On its own, 186 isn't a quantity with an obvious substantive meaning—but hold that thought! The dot product's real use is not computing one number in isolation, but what happens when one of the two vectors is a set of *weights*. This will make sense soon.
-</div>
-<div class="callout example">
-<span class="label"><span class="callout-type">Example</span> <span class="callout-title">A Single Country's Weighted Score</span></span>
-Suppose we want to combine a country's growth and EU integration into one composite index, giving growth twice the weight of integration. Write that choice as a weight vector, $\mathbf{w} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}$. For Georgia, whose growth and integration values are $\begin{bmatrix} 3 \\ 3 \end{bmatrix}$:
-$$
-\mathbf{w} \cdot \begin{bmatrix} 3 \\ 3 \end{bmatrix} = (2)(3) + (1)(3) = 9
-$$
-Every entry of the data vector got multiplied by its corresponding weight, and the results were summed into a single composite number for Georgia. This is the pattern to hold onto: a dot product between a weight vector and a data vector produces one weighted combination.
-</div>
-
-## Geometric Implications of the Dot Product
-
-Beyond serving as a weighted sum, the dot product also carries information about how two vectors relate to each other in space. To see this, we first need a way to measure a vector's own size.
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Vector Norm (Length)</span></span>
-The norm (or length) of a vector $\mathbf{v}$ is
-$$
-\|\mathbf{v}\| = \sqrt{\mathbf{v} \cdot \mathbf{v}} = \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2}
-$$
-This is simply the dot product of a vector with itself (square-rooted). It is a direct generalization of the Pythagorean theorem to $n$ dimensions.
-</div>
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span>  <span class="callout-title">Dot Products and Angles</span></span>
-For any two vectors $\mathbf{u}, \mathbf{v}$,
-$$
-\mathbf{u} \cdot \mathbf{v} = \|\mathbf{u}\|\|\mathbf{v}\|\cos\theta
-$$
-where $\theta$ is the angle between them. Equivalently,
-$$
-\cos\theta = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|\|\mathbf{v}\|}
-$$
-</div>
-
-
-This is what the dot product is really measuring: not just a weighted sum, but how aligned two vectors are. $\cos\theta$ close to $1$ means the vectors point in nearly the same direction; close to $0$ means they're roughly perpendicular (unrelated); close to $-1$ means they point in nearly opposite directions.
-
-
-<div class="callout example">
-<span class="label"><span class="callout-type">Example</span> <span class="callout-title">How Aligned are Growth and Democracy?</span></span>
-Calculate the angle between the GDP Growth and Democracy Score columns of $A$.
-
-<details class="collapsible">
-<summary>Solution</summary>
-$$
-\mathbf{x}_1 = \begin{bmatrix} 3 \\ 4 \\ 3 \\ 7 \\ 6 \\ 7 \end{bmatrix}, \qquad
-\mathbf{x}_2 = \begin{bmatrix} 3 \\ 2 \\ 4 \\ 8 \\ 7 \\ 8 \end{bmatrix}
-$$
-$$
-\mathbf{x}_1 \cdot \mathbf{x}_2 = 9+8+12+56+42+56 = 183
-$$
-$$
-\|\mathbf{x}_1\| = \sqrt{9+16+9+49+36+49} = \sqrt{168} \approx 12.96, \qquad
-\|\mathbf{x}_2\| = \sqrt{9+4+16+64+49+64} = \sqrt{206} \approx 14.35
-$$
-$$
-\cos\theta = \frac{183}{(12.96)(14.35)} \approx 0.984
-$$
-We take the inverse cosine to see that this corresponds to an angle of about $10^\circ$, meaning the two vectors point in nearly the same direction. Geometrically, this is what it looks like for two variables to move together: as columns of numbers, growth and democracy trace out almost the same shape across the six countries.
-</div>
-
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-This is not a coincidence, and not unrelated to statistics you may already know: $\cos\theta$ between two variables' columns, once each column has been centered (its mean subtracted off), is exactly the Pearson correlation coefficient.
-</div>
-
-## Matrix-Vector Multiplication
-
-Example 1.4 computed a weighted composite score for Georgia alone. But our scholar has six countries, not just one, and recomputing that dot product by hand, country by country, is exactly the kind of repetition vectors and matrices exist to eliminate.
-
-Collect the growth and EU integration columns side by side into a $6 \times 2$ matrix:
-
-$$
-M = 
-\begin{bmatrix}
-3 & 2 \\
-4 & 1 \\
-3 & 3 \\
-7 & 9 \\
-6 & 8 \\
-7 & 8
-\end{bmatrix}
-$$
-
-Each row of $M$ is one country's (growth, integration) pair: the same pair Example 1.4 dotted with $\mathbf{w} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}$ for Georgia alone. Matrix-vector multiplication is what happens when you do that same dot product against *every row at once*.
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span>  <span class="callout-title">Matrix-Vector Multiplication</span></span>
-For an $m \times n$ matrix $M$ and an $n \times 1$ vector $\mathbf{w}$, the product $M\mathbf{w}$ is the $m \times 1$ vector whose $i$-th entry is the dot product of $M$'s $i$-th row with $\mathbf{w}$:
-$$
-(M\mathbf{w})_i = \sum_{j=1}^n M_{ij}w_j
-$$
-This is only defined when the number of columns in $M$ matches the number of entries in $\mathbf{w}$ — each row needs a matching weight to dot against.
-</div>
-
-<div class="callout example">
-<span class="label"><span class="callout-type">Example</span>  <span class="callout-title">A Composite Score for Every Country, At Once</span></span>
-$$
-M\mathbf{w} = 
-\begin{bmatrix}
-3 & 2 \\
-4 & 1 \\
-3 & 3 \\
-7 & 9 \\
-6 & 8 \\
-7 & 8
-\end{bmatrix}
-\begin{bmatrix} 2 \\ 1 \end{bmatrix}
-=
-\begin{bmatrix}
-(3)(2)+(2)(1) \\
-(4)(2)+(1)(1) \\
-(3)(2)+(3)(1) \\
-(7)(2)+(9)(1) \\
-(6)(2)+(8)(1) \\
-(7)(2)+(8)(1)
-\end{bmatrix}
-=
-\begin{bmatrix} 8 \\ 9 \\ 9 \\ 23 \\ 20 \\ 22 \end{bmatrix}
-$$
-Notice the third entry, 9 (Georgia's composite score) matches Example 1.4 exactly. Nothing new was computed; six dot products that we'd otherwise have written out separately were performed in one line, against the same weight vector $\mathbf{w}$.
-</div>
-
-## Matrix-Matrix Multiplication
-
-Matrix-vector multiplication ($M\mathbf{w}$) applies one weight vector to every row of $M$ at once. A natural next question: what if we wanted to try *several* weight vectors simultaneously—for example, one composite index that weights growth twice as heavily as integration, and a second index that weights them equally?
-
-Instead of computing $M\mathbf{w}_1$ and $M\mathbf{w}_2$ separately, stack the two weight vectors side by side as columns of a matrix $W$, and apply both at once.
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Matrix-Matrix Multiplication</span></span>
-For an $m \times n$ matrix $M$ and an $n \times p$ matrix $W$, the product $MW$ is the $m \times p$ matrix whose $(i,k)$ entry is the dot product of $M$'s $i$-th row with $W$'s $k$-th column:
-$$
-(MW)_{ik} = \sum_{j=1}^n M_{ij}W_{jk}
-$$
-Each column of $MW$ is exactly what matrix-vector multiplication would have produced using that column of $W$ alone. Multiplying by a matrix is nothing more than multiplying by several vectors, side by side, at once.
-</div>
-
-<div class="callout example">
-<span class="label"><span class="callout-type">Example</span> <span class="callout-title">Two Composite Indices, At Once</span></span>
-Take $M$ (growth and integration, from before) and let $W$'s two columns be the two weighting schemes:
-$$
-W = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}
-$$
-(column 1: weight growth twice integration; column 2: weight them equally.) Then
-$$
-MW = \begin{bmatrix} 3 & 2 \\ 4 & 1 \\ 3 & 3 \\ 7 & 9 \\ 6 & 8 \\ 7 & 8 \end{bmatrix}\begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 8 & 5 \\ 9 & 5 \\ 9 & 6 \\ 23 & 16 \\ 20 & 14 \\ 22 & 15 \end{bmatrix}
-$$
-</div>
-
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-Matrix multiplication is only defined when the number of columns in the first matrix matches the number of rows in the second.
-</div>
-
-## Matrix Operations: The Transpose
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Transpose</span></span>
-The transpose of an $m \times n$ matrix $M$, written $M^\top$, is the $n \times m$ matrix obtained by turning $M$'s rows into columns (equivalently, its columns into rows): $(M^\top)_{ij} = M_{ji}$.
-</div>
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-The transpose reverses order when applied to a product: for compatible matrices $A$ and $B$,
-$$
-(AB)^\top = B^\top A^\top
-$$
-Notice the swap: it's not $A^\top B^\top$. This will matter later whenever we need to transpose an expression built out of several matrices multiplied together (for instance, unpacking something like $(MW)^\top$ requires transposing $W$ and $M$ individually, and reversing their order).
-</div>
-
-<div class="callout example">
-<span class="label"><span class="callout-type">Example</span> </span>
-$$
-M = \begin{bmatrix} 3 & 2 \\ 4 & 1 \\ 3 & 3 \end{bmatrix}, \qquad M^\top = \begin{bmatrix} 3 & 4 & 3 \\ 2 & 1 & 3 \end{bmatrix}
-$$
-$M$ is $3\times 2$; $M^\top$ is $2\times 3$.
-</div>
-
-
-## Special Classes of Matrices
-
-Certain matrices come up often enough, and behave predictably enough, that they are worth naming individually.
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Identity Matrix</span></span>
-The $n \times n$ diagonal matrix with every $d_i = 1$, denoted $I$ (or $I_n$ when the dimension needs to be made explicit):
-$$
-I = \begin{bmatrix}
-1 & 0 & \cdots & 0 \\
-0 & 1 & \cdots & 0 \\
-\vdots & \vdots & \ddots & \vdots \\
-0 & 0 & \cdots & 1
-\end{bmatrix}
-$$
-$I$ satisfies $IM = M$ and $MI = M$ for any compatible matrix $M$. It plays the same role among matrices that the number $1$ plays among ordinary numbers.
-</div>
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Zero Matrix</span></span>
-The matrix with every entry equal to $0$, denoted $\mathbf{0}$. It satisfies $M + \mathbf{0} = M$ and $M\mathbf{0} = \mathbf{0}$.
-</div>
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Square Matrix</span></span>
-A matrix is square if it has the same number of rows as columns ($m = n$). Many of the operations later in this course (e.g., inverses, determinants) are only defined for square matrices.
-</div>
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Diagonal Matrix</span></span>
-An $n \times n$ matrix whose only nonzero entries lie on the main diagonal (top-left to bottom-right):
-$$
-D = \begin{bmatrix}
-d_1 & 0 & \cdots & 0 \\
-0 & d_2 & \cdots & 0 \\
-\vdots & \vdots & \ddots & \vdots \\
-0 & 0 & \cdots & d_n
-\end{bmatrix}
-$$
-Equivalently, $D_{ij} = 0$ whenever $i \neq j$. Multiplying a vector by a diagonal matrix simply rescales each entry independently.
-</div>
-
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Symmetric Matrix</span></span>
-A square matrix $S$ satisfying $S^\top = S$. Its entries are mirrored across the main diagonal, $S_{ij} = S_{ji}$ for every $i,j$.
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">System of linear equations</span></span>
+A system of linear equations is a collection of equations, each linear in the same set of unknowns. Written in matrix form, $A\mathbf{x} = \mathbf{b}$, where $A$ is a known matrix of coefficients, $\mathbf{b}$ is a known vector, and $\mathbf{x}$ is the unknown vector we're solving for.
 </div>
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
-For any matrix $M$ (square or not), $M^\top M$ is always symmetric:
+Suppose two composite indices were built from growth and EU integration — one gave growth double weight, the other weighted them equally — and only the resulting composite scores for two countries were reported, not the weights used to build them. Recovering the weights means solving:
 $$
-(M^\top M)^\top = M^\top (M^{\top})^{\top} = M^\top M
+\begin{aligned}
+2w_1 + w_2 &= 8 \\
+w_1 + w_2 &= 5
+\end{aligned}
+\qquad\Longleftrightarrow\qquad
+\begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}\begin{bmatrix} w_1 \\ w_2 \end{bmatrix} = \begin{bmatrix} 8 \\ 5 \end{bmatrix}
 $$
-This will matter directly once we start combining transposes with matrix multiplication later in the course.
+
+This is $A\mathbf{x} = \mathbf{b}$: $A$ is the matrix of known coefficients, $\mathbf{b}$ is the known outcome, and $\mathbf{x} = (w_1, w_2)$ is what we want to recover.
 </div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+This is exactly the shape of problem the scholar actually faces, just smaller: given some known relationship between inputs and an outcome, recover the unknown weights connecting them. Session 1 built the tools to *write down* $A\mathbf{x}=\mathbf{b}$ compactly. This session builds the tools to actually *solve* it — by hand, systematically, for a system of any size, not just $2\times2$.
+</div>
+
+## Gaussian Elimination
+
+There's no shortage of ways to solve a $2\times2$ system like the one above by hand — substitution, elimination by inspection, guessing and checking. None of those approaches scale cleanly once a system has five, ten, or a hundred unknowns, which is the realistic size of a political scientist's design matrix. Gaussian elimination is the method that does scale: a fixed, mechanical procedure that works identically regardless of size.
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Elementary row operations</span></span>
+Three operations can be applied to a system of equations (equivalently, to the rows of $A$ and $\mathbf{b}$ together) without changing the solution:
+<ol>
+<li>Swap two rows.</li>
+<li>Multiply a row by a nonzero constant.</li>
+<li>Add a multiple of one row to another row.</li>
+</ol>
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+Why do these preserve the solution? Each operation just rewrites one or more equations as a combination of equations already known to be true — swapping the order two facts are listed in, scaling both sides of one true equation, or adding one true equation to another. None of that changes which values of $\mathbf{x}$ make every equation hold simultaneously.
+</div>
+
+The strategy is to use these operations to eliminate variables one at a time, working toward a form where the last equation involves only one unknown, the second-to-last involves at most two, and so on — at which point the system can be solved by simple back-substitution.
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+Return to
+$$
+\begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}\begin{bmatrix} w_1 \\ w_2 \end{bmatrix} = \begin{bmatrix} 8 \\ 5 \end{bmatrix}
+$$
+Write the coefficients and the right-hand side together as an augmented matrix, a bookkeeping device that carries both through the same row operations at once:
+$$
+\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 1 & 1 & 5 \end{array}\right]
+$$
+**Step 1: eliminate $w_1$ from row 2.** Subtract $\tfrac{1}{2}$ of row 1 from row 2:
+$$
+\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 0 & \tfrac{1}{2} & 1 \end{array}\right]
+$$
+Row 2 now says $\tfrac{1}{2}w_2 = 1$, i.e. $w_2 = 2$ — a single equation in a single unknown.
+
+**Step 2: back-substitute.** Plug $w_2 = 2$ into row 1: $2w_1 + 2 = 8 \Rightarrow w_1 = 3$.
+
+So $\mathbf{w} = (3, 2)$: the first composite index weighted growth 3 and integration 2 — wait, this is what we're *solving for*, not what we assumed; check it against the original system: $2(3)+2 = 8$ ✓, $3+2=5$ ✓.
+</div>
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Row echelon form</span></span>
+A matrix is in row echelon form when every row's leading nonzero entry (its <em>pivot</em>) sits strictly to the right of the pivot in the row above it, and any all-zero rows sit at the bottom. The elimination step above transformed $A$ into exactly this form — an upper-triangular shape with a pivot in every row.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+This procedure generalizes without modification to any size system: eliminate the first variable from every row below the first, then the second variable from every row below the second, and so on, until the matrix is in row echelon form. Back-substitution then unwinds the unknowns from the bottom up, exactly as in Step 2 above.
+</div>
+
+## When elimination doesn't go cleanly
+
+The example above worked out neatly: two equations, two unknowns, elimination produced a pivot in every row, and back-substitution gave a unique answer. This won't always happen — and what goes wrong, and how it shows up during elimination, turns out to be exactly the information a political scientist needs about their data.
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+Suppose a third "index" had been reported, built by weighting growth and integration in a way that just happened to be the *sum* of the first two indices already in the system:
+$$
+\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 1 & 1 & 5 \\ 3 & 2 & 13 \end{array}\right]
+$$
+Eliminate $w_1$ from rows 2 and 3 using row 1 (subtract $\tfrac12$ row 1 from row 2, subtract $\tfrac32$ row 1 from row 3):
+$$
+\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 0 & \tfrac12 & 1 \\ 0 & \tfrac12 & 1 \end{array}\right]
+$$
+Now subtract row 2 from row 3:
+$$
+\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 0 & \tfrac12 & 1 \\ 0 & 0 & 0 \end{array}\right]
+$$
+Row 3 has vanished entirely — it reduced to $0=0$, a statement that's always true and tells us nothing new about $w_1, w_2$.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+This isn't a computational accident. Row 3 of the original system, $3w_1 + 2w_2 = 13$, was exactly row 1 plus row 2 all along — it carried no information beyond what rows 1 and 2 already contained. Elimination didn't just fail to find a third pivot; it *discovered* that the third equation was redundant, by mechanically reducing it to nothing.
+</div>
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Linear independence</span></span>
+A set of vectors is linearly independent if none of them can be written as a combination (a weighted sum) of the others. Equivalently, the only way to combine them into the zero vector is to weight every one of them by zero.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+The three rows above were linearly <em>dependent</em>: row 3 was $1\times$row 1 $+\ 1\times$row 2. This is precisely the political-science scenario to watch for — if one variable in a dataset is an exact (or near-exact) combination of others already included, it carries no new information, and any system built from it will show the same symptom under elimination: a row that reduces to zero.
+</div>
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Rank</span></span>
+The rank of a matrix is the number of pivots produced by Gaussian elimination — equivalently, the number of linearly independent rows (or, it turns out, equivalently the number of linearly independent columns). A matrix has <em>full rank</em> when its rank equals its number of rows (or columns, whichever is smaller).
+</div>
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+The $2\times2$ system from before had rank 2 — full rank, two pivots, a unique solution. The $3\times2$ system just worked had rank 2 as well, despite having three rows: only two pivots appeared, because the third row was redundant. Rank measures how much genuinely independent information a system actually contains, which is not always the same as how many equations (or variables) it appears to have.
+</div>
+
+## What rank tells you about solvability
+
+Elimination doesn't just reveal *how much* independent information a system carries — it tells you, directly, whether the system can be solved at all, and whether the solution (if one exists) is unique.
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+Modify the redundant-row system slightly: suppose the third reported composite score was $14$ instead of $13$, even though the weights $(3,2)$ were still supposed to be row 1 plus row 2:
+$$
+\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 1 & 1 & 5 \\ 3 & 2 & 14 \end{array}\right]
+$$
+Eliminating exactly as before (subtract $\tfrac12$ row 1 from row 2, $\tfrac32$ row 1 from row 3, then row 2 from row 3):
+$$
+\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 0 & \tfrac12 & 1 \\ 0 & 0 & 1 \end{array}\right]
+$$
+Row 3 now reads $0w_1 + 0w_2 = 1$ — a false statement, true for no values of $w_1, w_2$ whatsoever. There is no vector $\mathbf{w}$ that satisfies all three equations simultaneously.
+</div>
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Consistent and inconsistent systems</span></span>
+A system $A\mathbf{x}=\mathbf{b}$ is <em>consistent</em> if at least one solution exists, and <em>inconsistent</em> if none does. Under elimination, inconsistency shows up as a row reducing to $0 = c$ for some nonzero constant $c$ — exactly the situation above.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+Compare the two versions of this example carefully, because the distinction matters. When the third row reduced to $0=0$ (the earlier example), the equation was redundant but not contradictory — dropping it left a perfectly solvable system, just with fewer independent constraints than equations. When it instead reduces to $0=c$ for $c\neq0$, the equations actively conflict, and no solution exists at all. Elimination distinguishes these two cases automatically, just by what constant ends up on the right-hand side of the vanished row.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+Putting the pieces together, for a system $A\mathbf{x}=\mathbf{b}$ with $A$ square ($n\times n$):
+<ul>
+<li>If $A$ has full rank $n$ (a pivot in every row and column), the system has exactly <em>one</em> solution, regardless of $\mathbf{b}$.</li>
+<li>If $A$ does not have full rank, the system either has <em>infinitely many</em> solutions (redundant but consistent rows — like the $0=0$ case) or <em>no</em> solution (an inconsistent row — like the $0=c$ case just above), depending on $\mathbf{b}$.</li>
+</ul>
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+This is the precise version of a question every applied researcher eventually runs into under a vaguer name: what happens if two of my predictors are (nearly) redundant? A rank-deficient $A$ is the exact mechanism. The scholar's design matrix losing full rank — say, if EU integration turned out to be an exact linear function of growth across every country in the sample — would mean the system determining the model's weights no longer has a unique solution, for reasons now visible directly in the elimination process rather than as a mysterious warning from statistical software.
+</div>
+
+## The inverse, via elimination
+
+Solving $A\mathbf{x}=\mathbf{b}$ by elimination works, but it's tied to one specific $\mathbf{b}$ — if the scholar later collects a new set of composite scores and wants the weights again, the whole elimination process would need to be redone from scratch. It would be far more useful to have a single object that solves the system for *any* $\mathbf{b}$, instantly.
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Matrix inverse</span></span>
+For a square matrix $A$, its inverse $A^{-1}$ (if it exists) is the matrix satisfying
+$$
+A^{-1}A = I \qquad \text{and} \qquad AA^{-1} = I
+$$
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+If $A^{-1}$ exists, solving $A\mathbf{x}=\mathbf{b}$ is immediate: multiply both sides on the left by $A^{-1}$.
+$$
+A^{-1}A\mathbf{x} = A^{-1}\mathbf{b} \quad\Longrightarrow\quad I\mathbf{x} = A^{-1}\mathbf{b} \quad\Longrightarrow\quad \mathbf{x} = A^{-1}\mathbf{b}
+$$
+This is the exact matrix analogue of solving $ax=b$ for a single number by multiplying both sides by $a^{-1}$ — the identity matrix $I$ plays the role that the number $1$ plays in ordinary algebra, precisely as flagged back in session 1.
+</div>
+
+Finding $A^{-1}$ turns out not to require new machinery — it's the same elimination procedure from this session, run on a cleverly chosen augmented matrix.
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Gauss-Jordan elimination</span></span>
+To find $A^{-1}$ for an $n\times n$ matrix $A$: form the augmented matrix $[A \mid I]$, then apply row operations until the left block becomes $I$. Whatever ends up in the right block is $A^{-1}$.
+</div>
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+Take $A = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}$ from before. Augment with $I$:
+$$
+\left[\begin{array}{cc|cc} 2 & 1 & 1 & 0 \\ 1 & 1 & 0 & 1 \end{array}\right]
+$$
+**Eliminate below the first pivot:** subtract $\tfrac12$ row 1 from row 2:
+$$
+\left[\begin{array}{cc|cc} 2 & 1 & 1 & 0 \\ 0 & \tfrac12 & -\tfrac12 & 1 \end{array}\right]
+$$
+**Clear above the second pivot too** (this is the "Jordan" half — eliminating upward as well as downward): subtract $2\times$ row 2 from row 1:
+$$
+\left[\begin{array}{cc|cc} 2 & 0 & 2 & -2 \\ 0 & \tfrac12 & -\tfrac12 & 1 \end{array}\right]
+$$
+**Scale each row so the left block becomes $I$:** divide row 1 by 2, row 2 by $\tfrac12$:
+$$
+\left[\begin{array}{cc|cc} 1 & 0 & 1 & -1 \\ 0 & 1 & -1 & 2 \end{array}\right]
+$$
+So $A^{-1} = \begin{bmatrix} 1 & -1 \\ -1 & 2 \end{bmatrix}$.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+Check this against the earlier result. With $\mathbf{b} = (8,5)$:
+$$
+A^{-1}\mathbf{b} = \begin{bmatrix} 1 & -1 \\ -1 & 2 \end{bmatrix}\begin{bmatrix} 8 \\ 5 \end{bmatrix} = \begin{bmatrix} 8-5 \\ -8+10 \end{bmatrix} = \begin{bmatrix} 3 \\ 2 \end{bmatrix}
+$$
+Same answer as elimination gave directly, $\mathbf{w}=(3,2)$ — but now available instantly for <em>any</em> right-hand side, without repeating elimination from scratch.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+Not every square matrix has an inverse. If $A$ is not full rank, Gauss-Jordan elimination will hit the same symptom seen earlier — a row on the left block reducing to all zeros — before the left side can ever become $I$. A matrix without an inverse is called <em>singular</em>; a matrix with one is <em>nonsingular</em> or <em>invertible</em>. This is the same rank condition from before, restated: $A^{-1}$ exists exactly when $A$ has full rank.
+</div>
+
+## The determinant
+
+Gauss-Jordan elimination tells you definitively whether $A$ is invertible — but only after you've done the work. It would be useful to have a quick check, computable directly from $A$'s entries, that answers the yes/no question up front.
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Determinant (2x2)</span></span>
+For $A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$, the determinant is
+$$
+\det(A) = ad - bc
+$$
+</div>
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+For $A = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}$ from before, $\det(A) = (2)(1)-(1)(1) = 1$.
+</div>
+
+<div class="callout proposition">
+<span class="label"><span class="callout-type">Proposition</span></span>
+A square matrix $A$ is invertible if and only if $\det(A) \neq 0$.
+</div>
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+Recall the singular case from earlier, where the third row was an exact combination of the first two. Restrict to just the first two rows and columns of that scenario, $A=\begin{bmatrix} 2 & 1 \\ 4 & 2 \end{bmatrix}$ — the second row is exactly twice the first, so no unique solution should exist. Check: $\det(A) = (2)(2)-(1)(4) = 4-4=0$. The determinant catches the singularity without any elimination at all.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+Geometrically, $|\det(A)|$ measures how much $A$ stretches or shrinks area (in 2D) or volume (in higher dimensions) when it acts on vectors. A determinant of zero means $A$ collapses space into a lower dimension — squashing a 2D plane down onto a single line, for instance — which is exactly why no inverse can exist: information about the second dimension has been destroyed, and there's no way to recover it.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+The determinant formula grows more involved for larger matrices ($3\times3$ and up), and computing it directly becomes impractical by hand well before matrices reach the sizes political scientists actually work with. In practice, the determinant is rarely computed by the raw formula — it falls out of elimination almost for free, as the product of the pivots (up to a sign that tracks row swaps). The formula above is worth knowing by hand for the $2\times2$ case specifically, since it's what makes the invertibility condition concrete rather than abstract.
+</div>
+
+## Closing the loop
+
+Return once more to the scholar's question, sitting untouched since the end of session 1: what weight vector best explains democracy score in terms of growth and EU integration? Session 1 gave a way to *write* that question precisely, as $A\mathbf{w}=\mathbf{b}$ for some matrix $A$ and vector $\mathbf{b}$ built from the data. This session gave a way to *answer* it — Gaussian elimination solves the system directly, and when $A$ is square and full rank, $\mathbf{w}=A^{-1}\mathbf{b}$ answers it for any $\mathbf{b}$ at all, with the determinant available as a fast check on whether that's even possible before doing the work.
+
+There is still a gap, and it's worth naming honestly before session 3 closes it: the scholar's actual data matrix, the one built from six countries and two predictors, is not square. $A\mathbf{w}=\mathbf{b}$ as written doesn't quite apply — there are more countries than unknowns, and nothing built so far says what "solving" an equation like that even means when a clean, unique answer generally can't exist. That gap is exactly where session 3 picks up.
