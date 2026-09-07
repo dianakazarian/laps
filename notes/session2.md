@@ -1,4 +1,4 @@
-_Overview: Insert here._
+_Overview: We introduce Gaussian elimination as the general method for solving systems of linear equations, applying it to assign weights and construct indices from real data. We then take up the broader question of whether a system is solvable at all, through rank and linear independence._
 
 <!--
 <a class="resource-link" href="slides/laps_session_1.pdf" target="_blank" rel="noopener">
@@ -6,40 +6,52 @@ _Overview: Insert here._
   Session 2 Slides
 </a>
 -->
+## Setting up a System of Equations
 
-## Systems of Linear Equations
+Let us check in on our scholar of the USSR. Suppose, after becoming familiar with vector addition and scalar multiplication throughout Session 1, he has decided to build an index of his own to represent "Western alignment." In particular, he is looking to combining GDP growth and EU integration into one convenient number that he can use later on in his analysis of democratization. Recall that we have already explored this idea. In Session 1, we built one index where we weighted growth twice as heavily as integration (Example 1.6), and another one where we weighted the two variables equally (Example 1.7).
+
+This time, though, the scholar is not content with simply picking those weights arbitrarily. Who is to say that growth should count twice as heavily as integration? Or that they should be equally important, for that matter? Instead of randomly choosing those weights, the scholar decides that they ought to be determined *by the data themselves*. Indeed, this seems like a very reasonable idea. Why should we take shots in the dark when we already have a collection of values that we trust in the form of our dataset?
+
+The most "trustworthy" values here are the democracy scores that this scholar has already collected. Estonia, by any reasonable judgment, is the most Western-aligned and democratic of the six countries. Its recorded democracy score of 8 is _data_, not a guess, and can serve as a target the index should reproduce exactly. Latvia is also a well-established Baltic democracy with over two decades of consistent EU membership, so its recorded growth, integration, and democracy scores can serve as another anchor. If some combination of growth and EU integration weights reproduces both of these *observed* scores exactly, the data themselves have determined the weights. Nothing was assumed beyond what has been sitting in the table all along.
+
+This is a specific instance of a much more general kind of problem: given known inputs and known outputs, find the unknown weights connecting them, driven entirely by observations already in hand.
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">System of linear equations</span></span>
-A system of linear equations is a collection of equations, each linear in the same set of unknowns. Written in matrix form, $A\mathbf{x} = \mathbf{b}$, where $A$ is a known matrix of coefficients, $\mathbf{b}$ is a known vector, and $\mathbf{x}$ is the unknown vector we're solving for.
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">System of Linear Equations</span></span>
+A collection of equations, each linear in the same set of unknowns. Written in matrix form, $A\mathbf{x} = \mathbf{b}$, where $A$ is a known matrix of coefficients, $\mathbf{b}$ is a known vector, and $\mathbf{x}$ is the unknown vector we are solving for.
 </div>
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
-Suppose two composite indices were built from growth and EU integration — one gave growth double weight, the other weighted them equally — and only the resulting composite scores for two countries were reported, not the weights used to build them. Recovering the weights means solving:
+Let us take the two examples we listed above: Estonia and Latvia. Estonia's GDP growth score is $7$, its integration score is $9$, and its democracy score is $8$. So our unknown weights ($w_1, w_2$) should satisfy the following equation:
 $$
-\begin{aligned}
-2w_1 + w_2 &= 8 \\
-w_1 + w_2 &= 5
-\end{aligned}
-\qquad\Longleftrightarrow\qquad
-\begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}\begin{bmatrix} w_1 \\ w_2 \end{bmatrix} = \begin{bmatrix} 8 \\ 5 \end{bmatrix}
+7w_1 + 9w_2 = 8
 $$
 
-This is $A\mathbf{x} = \mathbf{b}$: $A$ is the matrix of known coefficients, $\mathbf{b}$ is the known outcome, and $\mathbf{x} = (w_1, w_2)$ is what we want to recover.
+In the case of Latvia, we apply the exact same logic. Latvia's GDP growth score of $6$, integration score of $8$, and democracy score of $7$, yields a second equation for us:
+$$
+6w_1 + 8w_2 = 7
+$$
+
+Two equations, two unknowns. The only "setup" remaining is to put it in matrix form, as follows:
+
+$$
+\begin{bmatrix} 7 & 9 \\ 6 & 8 \end{bmatrix}\begin{bmatrix} w_1 \\ w_2 \end{bmatrix} = \begin{bmatrix} 8 \\ 7 \end{bmatrix}
+
+$$
+
+This is $A\mathbf{x}=\mathbf{b}$: every entry of $A$ and $\mathbf{b}$ is a number already sitting in the scholar's table. Nothing here was chosen by hand. Only $\mathbf{x}=(w_1,w_2)$ is unknown, and finding it means letting these two observed rows determine the weights, rather than assuming them.
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-This is exactly the shape of problem the scholar actually faces, just smaller: given some known relationship between inputs and an outcome, recover the unknown weights connecting them. Session 1 built the tools to *write down* $A\mathbf{x}=\mathbf{b}$ compactly. This session builds the tools to actually *solve* it — by hand, systematically, for a system of any size, not just $2\times2$.
-</div>
+This is exactly the shape of problem the scholar's full model eventually needs solved, just at the smallest possible scale: two known cases pinning down two unknown weights. Session 1 built the tools to write $A\mathbf{x}=\mathbf{b}$ compactly. In this session, we will build the tools to actually solve it systematically for a system of any size, not just $2\times2$.
+
 
 ## Gaussian Elimination
 
-There's no shortage of ways to solve a $2\times2$ system like the one above by hand — substitution, elimination by inspection, guessing and checking. None of those approaches scale cleanly once a system has five, ten, or a hundred unknowns, which is the realistic size of a political scientist's design matrix. Gaussian elimination is the method that does scale: a fixed, mechanical procedure that works identically regardless of size.
+There's no shortage of ways to solve a $2\times2$ system like the one above by hand: substitution, elimination by inspection, guessing and checking. None of those approaches scale cleanly once a system has five, ten, or a hundred unknowns, which is the realistic size of a political scientist's design matrix. Gaussian elimination is the method that does scale: a fixed, mechanical procedure that works identically regardless of size.
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Elementary row operations</span></span>
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Elementary Row Operations</span></span>
 Three operations can be applied to a system of equations (equivalently, to the rows of $A$ and $\mathbf{b}$ together) without changing the solution:
 <ol>
 <li>Swap two rows.</li>
@@ -48,80 +60,187 @@ Three operations can be applied to a system of equations (equivalently, to the r
 </ol>
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-Why do these preserve the solution? Each operation just rewrites one or more equations as a combination of equations already known to be true — swapping the order two facts are listed in, scaling both sides of one true equation, or adding one true equation to another. None of that changes which values of $\mathbf{x}$ make every equation hold simultaneously.
+Why do these preserve the solution? Each operation just rewrites one or more equations as a combination of equations already known to be true: swapping the order two facts are listed in, scaling both sides of one true equation, or adding one true equation to another. None of that changes which values of $\mathbf{x}$ make every equation hold simultaneously.
+
+The strategy is to use these operations to eliminate variables one at a time, working toward a form where the last equation involves only one unknown, the second-to-last involves at most two, and so on, at which point the system can be solved by simple back-substitution.
+
+The strategy is to use these operations to eliminate variables one at a time, working toward a form where the last equation involves only one unknown, the second-to-last involves at most two, and so on, at which point the system can be solved by simple back-substitution.
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Row Echelon Form</span></span>
+A matrix is in row echelon form when every row's leading nonzero entry (its <em>pivot</em>) sits strictly to the right of the pivot in the row above it, and any all-zero rows sit at the bottom.
 </div>
 
-The strategy is to use these operations to eliminate variables one at a time, working toward a form where the last equation involves only one unknown, the second-to-last involves at most two, and so on — at which point the system can be solved by simple back-substitution.
+
+The shape doesn't depend on the matrix being square, or on any particular size: only on where the pivots (marked $\color{red}\bullet$) fall relative to each other:
+$$
+\begin{bmatrix} \color{red}\bullet & * \\ 0 & \color{red}\bullet \end{bmatrix}, \qquad
+\begin{bmatrix} \color{red}\bullet & * & * \\ 0 & \color{red}\bullet & * \\ 0 & 0 & \color{red}\bullet \end{bmatrix}, \qquad
+\begin{bmatrix} \color{red}\bullet & * & * & * \\ 0 & \color{red}\bullet & * & * \\ 0 & 0 & 0 & \color{red}\bullet \end{bmatrix}, \qquad
+\begin{bmatrix} \color{red}\bullet & * & * \\ 0 & \color{red}\bullet & * \\ 0 & 0 & 0 \end{bmatrix}
+$$
+Here $*$ stands for any number at all, including zero — only the pivots and the zeros below them are constrained. The third matrix shows a pivot allowed to skip a column (the third row's pivot sits in the fourth column, not the third), and the fourth shows what an all-zero row looks like once it appears: it's pushed to the bottom, below every row that still has a pivot.
+
+By contrast, none of the following matrices is in row echelon form:
+$$
+\begin{bmatrix} 0 & \color{red}\bullet \\ \color{red}\bullet & * \end{bmatrix}, \qquad
+\begin{bmatrix} \color{red}\bullet & * & * \\ 0 & 0 & \color{red}\bullet \\ 0 & \color{red}\bullet & * \end{bmatrix}, \qquad
+\begin{bmatrix} \color{red}\bullet & * & * \\ 0 & 0 & 0 \\ 0 & \color{red}\bullet & * \end{bmatrix}
+$$
+In the first, row 1's pivot is missing entirely (its leading entry is $0$) while row 2 has one: pivots have to appear top to bottom, not in any order. In the second and third, a pivot in a lower row sits in the <em>same or an earlier</em> column than the pivot above it, and in the third, a zero row sits above a nonzero one. Each of these is exactly the failure Gaussian elimination is designed to avoid.
+
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+This is precisely the shape the elimination strategy above is aiming to produce. Once a system's augmented matrix looks like the examples above (a staircase of pivots, each one column further right than the last), back-substitution can proceed exactly as described: solve the bottom row (it has only one unknown left), then substitute upward, one row at a time.
+</div>
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
-Return to
+Before returning to the scholar's data, a quick warm-up with some simpler numbers. We will now write the coefficients and the right-hand side together as an augmented matrix, which is simply a bookkeeping device that carries both through the same row operations at once.
 $$
-\begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}\begin{bmatrix} w_1 \\ w_2 \end{bmatrix} = \begin{bmatrix} 8 \\ 5 \end{bmatrix}
+\begin{aligned}
+x + y &= 5 \\
+2x + y &= 8
+\end{aligned}
+\qquad\Longleftrightarrow\qquad
+\left[\begin{array}{cc|c} 1 & 1 & 5 \\ 2 & 1 & 8 \end{array}\right] \begin{matrix} R_1 \\ R_2 \end{matrix}
 $$
-Write the coefficients and the right-hand side together as an augmented matrix, a bookkeeping device that carries both through the same row operations at once:
-$$
-\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 1 & 1 & 5 \end{array}\right]
-$$
-**Step 1: eliminate $w_1$ from row 2.** Subtract $\tfrac{1}{2}$ of row 1 from row 2:
-$$
-\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 0 & \tfrac{1}{2} & 1 \end{array}\right]
-$$
-Row 2 now says $\tfrac{1}{2}w_2 = 1$, i.e. $w_2 = 2$ — a single equation in a single unknown.
 
-**Step 2: back-substitute.** Plug $w_2 = 2$ into row 1: $2w_1 + 2 = 8 \Rightarrow w_1 = 3$.
+Eliminate $x$ from $R_2$. Replace $R_2$ with $R_2 - 2R_1$:
+$$
+ R_2 - 2R_1 \rightarrow R_2: \qquad
+\left[\begin{array}{cc|c} 1 & 1 & 5 \\ 0 & -1 & -2 \end{array}\right]
+$$
+$R_2$ now involves only $y$: $-y = -2 \Rightarrow y = 2$.
 
-So $\mathbf{w} = (3, 2)$: the first composite index weighted growth 3 and integration 2 — wait, this is what we're *solving for*, not what we assumed; check it against the original system: $2(3)+2 = 8$ ✓, $3+2=5$ ✓.
+Back-substitute. Plug $y=2$ into $R_1$: $x + 2 = 5 \Rightarrow x = 3$.
+
+So $(x,y) = (3,2)$. We can check this solution by plugging the numbers back into the original equations: $3+2=5$, $2(3)+2=8$. With the mechanics settled on numbers this simple (meaning non-fractional!), the same process now applies directly to the scholar's actual data.
 </div>
 
-<div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Row echelon form</span></span>
-A matrix is in row echelon form when every row's leading nonzero entry (its <em>pivot</em>) sits strictly to the right of the pivot in the row above it, and any all-zero rows sit at the bottom. The elimination step above transformed $A$ into exactly this form — an upper-triangular shape with a pivot in every row.
-</div>
+The two equations from before are stuck together: row 2 involves both $w_1$ and $w_2$, so neither equation can be solved on its own. The goal of elimination is to use row operations to rewrite the system so that this is no longer true: to reshape it so that the *last* row involves only one unknown, solvable immediately, after which its value can be substituted back into the row above.
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-This procedure generalizes without modification to any size system: eliminate the first variable from every row below the first, then the second variable from every row below the second, and so on, until the matrix is in row echelon form. Back-substitution then unwinds the unknowns from the bottom up, exactly as in Step 2 above.
-</div>
-
-## When elimination doesn't go cleanly
-
-The example above worked out neatly: two equations, two unknowns, elimination produced a pivot in every row, and back-substitution gave a unique answer. This won't always happen — and what goes wrong, and how it shows up during elimination, turns out to be exactly the information a political scientist needs about their data.
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
-Suppose a third "index" had been reported, built by weighting growth and integration in a way that just happened to be the *sum* of the first two indices already in the system:
+Return to our scholar's calibration system,
 $$
-\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 1 & 1 & 5 \\ 3 & 2 & 13 \end{array}\right]
+\begin{bmatrix} 7 & 9 \\ 6 & 8 \end{bmatrix}\begin{bmatrix} w_1 \\ w_2 \end{bmatrix} = \begin{bmatrix} 8 \\ 7 \end{bmatrix}
 $$
-Eliminate $w_1$ from rows 2 and 3 using row 1 (subtract $\tfrac12$ row 1 from row 2, subtract $\tfrac32$ row 1 from row 3):
+As before, we write the coefficients and the right-hand side as an augmented matrix:
 $$
-\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 0 & \tfrac12 & 1 \\ 0 & \tfrac12 & 1 \end{array}\right]
+\left[\begin{array}{cc|c} 7 & 9 & 8 \\ 6 & 8 & 7 \end{array}\right] \begin{matrix} R_1 \\ R_2 \end{matrix}
 $$
-Now subtract row 2 from row 3:
+Using row operation 3, add a multiple of $R_1$ to $R_2$ chosen so that $R_2$'s leading entry becomes zero. So, we replace $R_2$ with $R_2 - \tfrac{6}{7}R_1$:
 $$
-\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 0 & \tfrac12 & 1 \\ 0 & 0 & 0 \end{array}\right]
+R_2 - \tfrac{6}{7}R_1 \rightarrow R_2: \qquad
+\left[\begin{array}{cc|c} 7 & 9 & 8 \\ 0 & \tfrac{2}{7} & \tfrac{1}{7} \end{array}\right]
 $$
-Row 3 has vanished entirely — it reduced to $0=0$, a statement that's always true and tells us nothing new about $w_1, w_2$.
+This is the shape we were aiming for: $R_1$ still involves both unknowns, but $R_2$ now involves only $w_2$. A system in this "staircase" shape (each row's leading nonzero entry sitting strictly to the right of the row above it) is said to be in "row echelon form." Reaching it is the whole point of the row operations above: it's what makes the next step possible at all.
+
+<br>
+<br>
+
+Solve the bottom row. $R_2$ now says $\tfrac{2}{7}w_2 = \tfrac{1}{7}$, directly, i.e. $w_2 = \tfrac12$.
+
+Back-substitute. Plug $w_2 = \tfrac12$ into $R_1$: $7w_1 + 9\left(\tfrac12\right) = 8 \Rightarrow 7w_1 = 8 - \tfrac92 = \tfrac72 \Rightarrow w_1 = \tfrac12$.
+
+So $\mathbf{w} = \left(\tfrac12, \tfrac12\right)$. The index simply averages GDP growth and EU integration.
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-This isn't a computational accident. Row 3 of the original system, $3w_1 + 2w_2 = 13$, was exactly row 1 plus row 2 all along — it carried no information beyond what rows 1 and 2 already contained. Elimination didn't just fail to find a third pivot; it *discovered* that the third equation was redundant, by mechanically reducing it to nothing.
+
+This procedure generalizes without modification to any size system: eliminate the first variable from every row below the first, then the second variable from every row below the second, and so on, until the matrix is in row echelon form. Back-substitution then unwinds the unknowns from the bottom up, exactly as in the example above.
+
+To make sure we have the procedure down, it's worthwhile to do another practice problem—this time with very "clean" numbers on a 3x3 system. You'll notice that the process is exactly the same, just with another dimension.
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+Elimination works exactly the same way for larger systems, just with more rows to clear. Consider the $3\times3$ system
+$$
+\begin{aligned}
+x + y + z &= 6 \\
+2x + y + 3z &= 13 \\
+x - y + z &= 2
+\end{aligned}
+\qquad\Longleftrightarrow\qquad
+\left[\begin{array}{ccc|c} 1 & 1 & 1 & 6 \\ 2 & 1 & 3 & 13 \\ 1 & -1 & 1 & 2 \end{array}\right] \begin{matrix} R_1 \\ R_2 \\ R_3 \end{matrix}
+$$
+
+Eliminate $x$ from $R_2$. Replace $R_2$ with $R_2 - 2R_1$:
+$$
+R_2 - 2R_1 \rightarrow R_2: \qquad
+\left[\begin{array}{ccc|c} 1 & 1 & 1 & 6 \\ 0 & -1 & 1 & 1 \\ 1 & -1 & 1 & 2 \end{array}\right]
+$$
+
+Eliminate $x$ from $R_3$. Replace $R_3$ with $R_3 - R_1$:
+$$
+R_3 - R_1 \rightarrow R_3: \qquad
+\left[\begin{array}{ccc|c} 1 & 1 & 1 & 6 \\ 0 & -1 & 1 & 1 \\ 0 & -2 & 0 & -4 \end{array}\right]
+$$
+$x$ is now gone from every row except $R_1$ — the first column looks exactly the way the identity matrix's first column would, below the pivot.
+
+Eliminate $y$ from $R_3$. Replace $R_3$ with $R_3 - 2R_2$:
+$$
+R_3 - 2R_2 \rightarrow R_3: \qquad
+\left[\begin{array}{ccc|c} 1 & 1 & 1 & 6 \\ 0 & -1 & 1 & 1 \\ 0 & 0 & -2 & -6 \end{array}\right]
+$$
+The matrix is now in row echelon form: each row's pivot sits strictly right of the one above it, and $R_3$ involves only $z$.
+
+Solve from the bottom up. $R_3$: $-2z = -6 \Rightarrow z = 3$. Substitute into $R_2$: $-y + 3 = 1 \Rightarrow y = 2$. Substitute both into $R_1$: $x + 2 + 3 = 6 \Rightarrow x = 1$.
+
+So $(x,y,z) = (1,2,3)$ — and notice the pattern from the $2\times2$ case scaled up exactly as promised: one elimination pass per column, then back-substitution unwinds the answer one row at a time, bottom to top.
 </div>
+
+
+
+## When Elimination Doesn't Go Cleanly
+
+All of the examples we have done so far have worked out neatly: elimination produced a pivot in every row and back-substitution gave a unique answer. Unfortunately, this won't always happen. Precisely what goes wrong, and how it shows up during elimination, turns out to be exactly the information a political scientist needs about their data.
+
+Suppose the scholar's data source reports EU integration twice: once on the familiar $0$–$10$ scale already in his dataset, and again as a percentage out of $100$: the same underlying score, just rescaled. If he isn't paying attention, he might include both versions as separate predictors in his model, alongside growth.
+
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+Suppose three countries' data, using growth, the $0$–$10$ integration score, and the $0$–$100$ integration score as three separate predictors:
+$$
+\left[\begin{array}{ccc|c}
+7 & 9 & 90 & 8 \\
+6 & 8 & 80 & 7 \\
+7 & 8 & 80 & 8
+\end{array}\right] \begin{matrix} R_1 \\ R_2 \\ R_3 \end{matrix}
+$$
+Eliminate $w_1$ from $R_2$ and $R_3$ using $R_1$:
+$$
+R_2 \leftarrow R_2 - \tfrac67 R_1, \qquad R_3 \leftarrow R_3 - R_1
+$$
+$$
+\left[\begin{array}{ccc|c}
+7 & 9 & 90 & 8 \\
+0 & \tfrac27 & \tfrac{20}{7} & \tfrac17 \\
+0 & -1 & -10 & 0
+\end{array}\right]
+$$
+Now eliminate $w_2$ from $R_3$ using $R_2$: $R_3 \leftarrow R_3 + \tfrac72 R_2$:
+$$
+\left[\begin{array}{ccc|c}
+7 & 9 & 90 & 8 \\
+0 & \tfrac27 & \tfrac{20}{7} & \tfrac17 \\
+0 & 0 & 0 & \tfrac12
+\end{array}\right]
+$$
+Row 3 reduces to $0w_1 + 0w_2 + 0w_3 = \tfrac12$ — a false statement, satisfied by no choice of weights whatsoever.
+</div>
+
+This is not a coincidence of these particular democracy scores. The third column here is exactly $10\times$ the second column, for every row, by construction — the $0$–$100$ integration score carries no information the $0$–$10$ score didn't already contain. Whenever one predictor is an exact rescaling of another already in the model, the coefficient matrix loses a dimension: no matter which countries are chosen or what their outcome scores happen to be, that column dependency is baked into the data itself, before any democracy scores ever enter the picture.
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Linear independence</span></span>
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Linear Independence</span></span>
 A set of vectors is linearly independent if none of them can be written as a combination (a weighted sum) of the others. Equivalently, the only way to combine them into the zero vector is to weight every one of them by zero.
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-The three rows above were linearly <em>dependent</em>: row 3 was $1\times$row 1 $+\ 1\times$row 2. This is precisely the political-science scenario to watch for — if one variable in a dataset is an exact (or near-exact) combination of others already included, it carries no new information, and any system built from it will show the same symptom under elimination: a row that reduces to zero.
-</div>
-
+The two integration columns are linearly <em>dependent</em>: $(\text{integration}_{100}) = 10\cdot(\text{integration}_{10})$, with nothing else needed. This is a surprisingly common, easy-to-miss trap in practice: unit conversions, the same variable reported at two different resolutions, or a total column sitting alongside its own components will all produce exactly this symptom! So be careful!
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Rank</span></span>
 The rank of a matrix is the number of pivots produced by Gaussian elimination — equivalently, the number of linearly independent rows (or, it turns out, equivalently the number of linearly independent columns). A matrix has <em>full rank</em> when its rank equals its number of rows (or columns, whichever is smaller).
@@ -129,51 +248,65 @@ The rank of a matrix is the number of pivots produced by Gaussian elimination �
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
-The $2\times2$ system from before had rank 2 — full rank, two pivots, a unique solution. The $3\times2$ system just worked had rank 2 as well, despite having three rows: only two pivots appeared, because the third row was redundant. Rank measures how much genuinely independent information a system actually contains, which is not always the same as how many equations (or variables) it appears to have.
+Check directly: the coefficient matrix in Example 1.5 has rank $2$, not $3$, regardless of which three countries were chosen or what their democracy scores happened to be because its columns can only ever span a $2$-dimensional space, no matter how many rows are stacked on top of it.
 </div>
 
-## What rank tells you about solvability
 
-Elimination doesn't just reveal *how much* independent information a system carries — it tells you, directly, whether the system can be solved at all, and whether the solution (if one exists) is unique.
+## Rank and Solvability
+
+Elimination, as we have seen, helps us solve for unknowns. It also helps us determine whether a given system can be solved at all, and whether the solution (if one exists) is unique.
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
-Modify the redundant-row system slightly: suppose the third reported composite score was $14$ instead of $13$, even though the weights $(3,2)$ were still supposed to be row 1 plus row 2:
+Rank is always found the same way: eliminate, and count the pivots. Take
 $$
-\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 1 & 1 & 5 \\ 3 & 2 & 14 \end{array}\right]
+\begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 7 \\ 1 & 1 & 1 \end{bmatrix}
 $$
-Eliminating exactly as before (subtract $\tfrac12$ row 1 from row 2, $\tfrac32$ row 1 from row 3, then row 2 from row 3):
+Eliminate the first column below $R_1$: $R_2 \leftarrow R_2 - 2R_1$, $R_3 \leftarrow R_3 - R_1$:
 $$
-\left[\begin{array}{cc|c} 2 & 1 & 8 \\ 0 & \tfrac12 & 1 \\ 0 & 0 & 1 \end{array}\right]
+\begin{bmatrix} 1 & 2 & 3 \\ 0 & 0 & 1 \\ 0 & -1 & -2 \end{bmatrix}
 $$
-Row 3 now reads $0w_1 + 0w_2 = 1$ — a false statement, true for no values of $w_1, w_2$ whatsoever. There is no vector $\mathbf{w}$ that satisfies all three equations simultaneously.
+$R_2$'s pivot would normally sit in column 2, but that entry is $0$ — so swap $R_2$ and $R_3$ to bring a nonzero entry into position:
+$$
+\begin{bmatrix} 1 & 2 & 3 \\ 0 & -1 & -2 \\ 0 & 0 & 1 \end{bmatrix}
+$$
+Three pivots (columns 1, 2, 3), one per row — this matrix has rank $3$, full rank for a $3\times3$ matrix.
 </div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+Compare this to the integration-on-two-scales example just before it, where elimination produced only two pivots before a row vanished entirely. The mechanical test is identical in both cases — eliminate, and see how many rows still have something left in them once you're done. The difference is entirely in the data: three genuinely independent directions of information here, versus only two there, no matter how the rows are arranged or which countries happen to appear in them.
+</div>
+
+### Consistent and Inconsistent Systems
+
+Rank tells you how much independent information a system carries, but not, on its own, whether the system can be solved. That second question depends on both $A$ and $\mathbf{b}$ together — and elimination answers it the same way it answers everything else: by what happens to the rows.
 
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Consistent and inconsistent systems</span></span>
-A system $A\mathbf{x}=\mathbf{b}$ is <em>consistent</em> if at least one solution exists, and <em>inconsistent</em> if none does. Under elimination, inconsistency shows up as a row reducing to $0 = c$ for some nonzero constant $c$ — exactly the situation above.
+A system $A\mathbf{x}=\mathbf{b}$ is <em>consistent</em> if at least one solution exists, and <em>inconsistent</em> if none does.
 </div>
 
 <div class="callout remark">
 <span class="label"><span class="callout-type">Remark</span></span>
-Compare the two versions of this example carefully, because the distinction matters. When the third row reduced to $0=0$ (the earlier example), the equation was redundant but not contradictory — dropping it left a perfectly solvable system, just with fewer independent constraints than equations. When it instead reduces to $0=c$ for $c\neq0$, the equations actively conflict, and no solution exists at all. Elimination distinguishes these two cases automatically, just by what constant ends up on the right-hand side of the vanished row.
+Both possibilities were already visible in the two rank-deficient rows seen so far. When a row eliminates down to $0 = 0$, that equation was redundant but not contradictory — true no matter what the unknowns are, so it can simply be dropped, leaving a smaller but still solvable system. When a row instead eliminates down to $0 = c$ for some nonzero $c$ — exactly what happened with the two integration scales above, where the last row read $0 = \tfrac12$ — the system is asserting something false, and no values of the unknowns can rescue it. The distinction is not a special case to memorize; it's just what the vanished row happens to say once elimination is finished.
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-Putting the pieces together, for a system $A\mathbf{x}=\mathbf{b}$ with $A$ square ($n\times n$):
+
+Putting rank and consistency together, for a system $A\mathbf{x}=\mathbf{b}$ with $A$ square ($n\times n$):
 <ul>
-<li>If $A$ has full rank $n$ (a pivot in every row and column), the system has exactly <em>one</em> solution, regardless of $\mathbf{b}$.</li>
-<li>If $A$ does not have full rank, the system either has <em>infinitely many</em> solutions (redundant but consistent rows — like the $0=0$ case) or <em>no</em> solution (an inconsistent row — like the $0=c$ case just above), depending on $\mathbf{b}$.</li>
+<li>If $A$ has full rank $n$, the system has exactly <em>one</em> solution, regardless of $\mathbf{b}$.</li>
+<li>If $A$ is rank-deficient, the system either has <em>infinitely many</em> solutions (if the redundant rows all reduce to $0=0$) or <em>none</em> (if any redundant row reduces to $0=c$ for $c\neq0$), depending entirely on $\mathbf{b}$.</li>
 </ul>
-</div>
+
 
 <div class="callout remark">
 <span class="label"><span class="callout-type">Remark</span></span>
-This is the precise version of a question every applied researcher eventually runs into under a vaguer name: what happens if two of my predictors are (nearly) redundant? A rank-deficient $A$ is the exact mechanism. The scholar's design matrix losing full rank — say, if EU integration turned out to be an exact linear function of growth across every country in the sample — would mean the system determining the model's weights no longer has a unique solution, for reasons now visible directly in the elimination process rather than as a mysterious warning from statistical software.
+This is the precise version of a question every applied researcher runs into under a vaguer name: what happens if two of my predictors are (nearly) redundant? A rank-deficient $A$ is the exact mechanism — and whether the resulting system is merely underdetermined or flatly unsolvable depends on data the researcher doesn't control, which is exactly why the two integration scales above turned out inconsistent rather than just redundant: nothing about the redundancy itself decided that outcome, the actual democracy scores did. Either way, this is the same condition statistical software flags as a cryptic error or a dropped variable when a regression won't run — now visible directly in the elimination process, rather than as a mysterious warning after the fact.
 </div>
 
-## The inverse, via elimination
+
+## The Inverse, via Elimination
 
 Solving $A\mathbf{x}=\mathbf{b}$ by elimination works, but it's tied to one specific $\mathbf{b}$ — if the scholar later collects a new set of composite scores and wants the weights again, the whole elimination process would need to be redone from scratch. It would be far more useful to have a single object that solves the system for *any* $\mathbf{b}$, instantly.
 
@@ -194,10 +327,10 @@ $$
 This is the exact matrix analogue of solving $ax=b$ for a single number by multiplying both sides by $a^{-1}$ — the identity matrix $I$ plays the role that the number $1$ plays in ordinary algebra, precisely as flagged back in session 1.
 </div>
 
-Finding $A^{-1}$ turns out not to require new machinery — it's the same elimination procedure from this session, run on a cleverly chosen augmented matrix.
+As it turns out, finding $A^{-1}$ does not require any new machinery: it's the same elimination procedure from this session, run on a cleverly chosen augmented matrix.
 
 <div class="callout definition">
-<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Gauss-Jordan elimination</span></span>
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Gauss-Jordan Elimination</span></span>
 To find $A^{-1}$ for an $n\times n$ matrix $A$: form the augmented matrix $[A \mid I]$, then apply row operations until the left block becomes $I$. Whatever ends up in the right block is $A^{-1}$.
 </div>
 
@@ -207,15 +340,15 @@ Take $A = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}$ from before. Augment wit
 $$
 \left[\begin{array}{cc|cc} 2 & 1 & 1 & 0 \\ 1 & 1 & 0 & 1 \end{array}\right]
 $$
-**Eliminate below the first pivot:** subtract $\tfrac12$ row 1 from row 2:
+Eliminate below the first pivot: subtract $\tfrac12$ row 1 from row 2:
 $$
 \left[\begin{array}{cc|cc} 2 & 1 & 1 & 0 \\ 0 & \tfrac12 & -\tfrac12 & 1 \end{array}\right]
 $$
-**Clear above the second pivot too** (this is the "Jordan" half — eliminating upward as well as downward): subtract $2\times$ row 2 from row 1:
+Clear above the second pivot too (this is the "Jordan" half — eliminating upward as well as downward): subtract $2\times$ row 2 from row 1:
 $$
 \left[\begin{array}{cc|cc} 2 & 0 & 2 & -2 \\ 0 & \tfrac12 & -\tfrac12 & 1 \end{array}\right]
 $$
-**Scale each row so the left block becomes $I$:** divide row 1 by 2, row 2 by $\tfrac12$:
+Scale each row so the left block becomes $I$: divide row 1 by 2, row 2 by $\tfrac12$:
 $$
 \left[\begin{array}{cc|cc} 1 & 0 & 1 & -1 \\ 0 & 1 & -1 & 2 \end{array}\right]
 $$
@@ -231,12 +364,9 @@ $$
 Same answer as elimination gave directly, $\mathbf{w}=(3,2)$ — but now available instantly for <em>any</em> right-hand side, without repeating elimination from scratch.
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
 Not every square matrix has an inverse. If $A$ is not full rank, Gauss-Jordan elimination will hit the same symptom seen earlier — a row on the left block reducing to all zeros — before the left side can ever become $I$. A matrix without an inverse is called <em>singular</em>; a matrix with one is <em>nonsingular</em> or <em>invertible</em>. This is the same rank condition from before, restated: $A^{-1}$ exists exactly when $A$ has full rank.
-</div>
 
-## The determinant
+## The Determinant
 
 Gauss-Jordan elimination tells you definitively whether $A$ is invertible — but only after you've done the work. It would be useful to have a quick check, computable directly from $A$'s entries, that answers the yes/no question up front.
 
