@@ -201,30 +201,11 @@ function buildToc() {
   const list = document.createElement("div");
   list.className = "toc-list";
 
-  content.querySelectorAll(".note-section").forEach((section) => {
-    const heading = section.querySelector(":scope > h1");
-    if (!heading) return;
-
-    const item = document.createElement("div");
-    item.className = "toc-item";
-
+  content.querySelectorAll(".note-section > h1").forEach((heading) => {
     const link = document.createElement("a");
-    link.href = `#${section.id}`;
+    link.href = `#${heading.parentElement.id}`;
     link.textContent = heading.textContent;
-    item.appendChild(link);
-
-    const slidesPath = slidesPathFor(section.dataset.file);
-    if (slidesPath) {
-      const slidesLink = document.createElement("a");
-      slidesLink.href = slidesPath;
-      slidesLink.target = "_blank";
-      slidesLink.rel = "noopener";
-      slidesLink.className = "toc-slides-link";
-      slidesLink.textContent = "Slides";
-      item.appendChild(slidesLink);
-    }
-
-    list.appendChild(item);
+    list.appendChild(link);
   });
 
   toc.replaceChildren(list);
