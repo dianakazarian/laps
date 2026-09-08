@@ -168,6 +168,52 @@ a:focus-visible {
   color: var(--accent-contrast);
 }
 
+#toc .toc-list a {
+  display: inline-block;
+  padding: 0.6rem 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--box);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 1.3rem;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+#toc .toc-list a:hover,
+#toc .toc-list a:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+#toc .toc-item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.3rem;
+}
+
+#toc .toc-slides-link {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--box);
+  color: var(--ink-faint);
+  text-decoration: none;
+  font-size: 0.85rem;
+  text-align: center;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+#toc .toc-slides-link:hover,
+#toc .toc-slides-link:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
 /* Notes and vertical spacing */
 #content {
   max-width: var(--max-w);
