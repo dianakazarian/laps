@@ -1,11 +1,10 @@
 _Overview: We introduce Gaussian elimination as the general method for solving systems of linear equations, applying it to assign weights and construct indices from real data. We then take up the broader question of whether a system is solvable at all, through rank and linear independence._
 
-<!--
 <a class="resource-link" href="slides/laps_session_1.pdf" target="_blank" rel="noopener">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-  Session 2 Slides
+  Session 2 Slides (.pdf)
 </a>
--->
+
 ## Setting Up a System of Equations
 
 Let us check in on our scholar of the USSR. Suppose, after becoming familiar with vector addition and scalar multiplication throughout Session 1, he has decided to build an index of his own to represent "Western alignment." In particular, he is looking to combining GDP growth and EU integration into one convenient number that he can use later on in his analysis of democratization. Recall that we have already explored this idea. Previously, we built one index where we weighted growth twice as heavily as integration (Example 1.6), and another one where we weighted the two variables equally (Example 1.7).
