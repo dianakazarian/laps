@@ -8,7 +8,7 @@ _Overview: We introduce Gaussian elimination as the general method for solving s
 -->
 ## Setting Up a System of Equations
 
-Let us check in on our scholar of the USSR. Suppose, after becoming familiar with vector addition and scalar multiplication throughout Session 1, he has decided to build an index of his own to represent "Western alignment." In particular, he is looking to combining GDP growth and EU integration into one convenient number that he can use later on in his analysis of democratization. Recall that we have already explored this idea. Previously, we built one index where we weighted growth twice as heavily as integration (Session 1, Example 1.6), and another one where we weighted the two variables equally (Session 1, Example 1.7).
+Let us check in on our scholar of the USSR. Suppose, after becoming familiar with vector addition and scalar multiplication throughout Session 1, he has decided to build an index of his own to represent "Western alignment." In particular, he is looking to combining GDP growth and EU integration into one convenient number that he can use later on in his analysis of democratization. Recall that we have already explored this idea. Previously, we built one index where we weighted growth twice as heavily as integration (Example 1.6), and another one where we weighted the two variables equally (Example 1.7).
 
 This time, though, the scholar is not content with simply picking those weights arbitrarily. Who is to say that growth should count twice as heavily as integration? Or that they should be equally important, for that matter? Instead of randomly choosing those weights, the scholar decides that they ought to be determined *by the data themselves*. Indeed, this seems like a very reasonable idea. Why should we take shots in the dark when we already have a collection of values that we trust in the form of our dataset?
 
@@ -244,7 +244,7 @@ The rank of a matrix is the number of pivots produced by Gaussian elimination: e
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
-Check directly: the coefficient matrix in Example 1.5 has rank $2$, not $3$, regardless of which three countries were chosen or what their democracy scores happened to be because its columns can only ever span a $2$-dimensional space, no matter how many rows are stacked on top of it.
+Check directly: the coefficient matrix in Example 2.5 has rank $2$, not $3$, regardless of which three countries were chosen or what their democracy scores happened to be because its columns can only ever span a $2$-dimensional space, no matter how many rows are stacked on top of it.
 </div>
 
 <div class="callout example">

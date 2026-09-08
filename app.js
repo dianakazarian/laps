@@ -190,17 +190,41 @@ function wrapCollapsibleContent() {
   });
 }
 
+function slidesPathFor(file) {
+  const match = file.match(/^session(\d+)\.md$/);
+  return match ? `slides/laps_session_${match[1]}.pdf` : null;
+}
+
 function buildToc() {
   const toc = byId("toc");
   const content = byId("content");
   const list = document.createElement("div");
   list.className = "toc-list";
 
-  content.querySelectorAll(".note-section > h1").forEach((heading) => {
+  content.querySelectorAll(".note-section").forEach((section) => {
+    const heading = section.querySelector(":scope > h1");
+    if (!heading) return;
+
+    const item = document.createElement("div");
+    item.className = "toc-item";
+
     const link = document.createElement("a");
-    link.href = `#${heading.parentElement.id}`;
+    link.href = `#${section.id}`;
     link.textContent = heading.textContent;
-    list.appendChild(link);
+    item.appendChild(link);
+
+    const slidesPath = slidesPathFor(section.dataset.file);
+    if (slidesPath) {
+      const slidesLink = document.createElement("a");
+      slidesLink.href = slidesPath;
+      slidesLink.target = "_blank";
+      slidesLink.rel = "noopener";
+      slidesLink.className = "toc-slides-link";
+      slidesLink.textContent = "Slides";
+      item.appendChild(slidesLink);
+    }
+
+    list.appendChild(item);
   });
 
   toc.replaceChildren(list);
