@@ -338,7 +338,7 @@ $$
 Same answer as elimination gave directly, $(x,y)=(3,2)$, but now available instantly for <em>any</em> right-hand side, without having to repeat elimination from scratch.
 
 
-Not every square matrix has an inverse. If $A$ is not full rank, Gauss-Jordan elimination will hit the same symptom seen earlier — a row on the left block reducing to all zeros — before the left side can ever become $I$. A matrix without an inverse is called <em>singular</em>; a matrix with one is <em>nonsingular</em> or <em>invertible</em>. This is the same rank condition from before, restated: $A^{-1}$ exists exactly when $A$ has full rank.
+Not every square matrix has an inverse. If $A$ is not full rank, Gauss-Jordan elimination will hit the same symptom seen earlier (a row on the left block reducing to all zeros) before the left side can ever become $I$. A matrix without an inverse is called <em>singular</em>; a matrix with one is <em>nonsingular</em> or <em>invertible</em>. This is the same rank condition from before: $A^{-1}$ exists exactly when $A$ has full rank.
 
 ## The Determinant
 
