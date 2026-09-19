@@ -209,6 +209,21 @@ $$
 
 This is what the dot product is really measuring: not just a weighted sum, but how aligned two vectors are. $\cos\theta$ close to $1$ means the vectors point in nearly the same direction; close to $0$ means they're roughly perpendicular (unrelated); close to $-1$ means they point in nearly opposite directions.
 
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+This is not a coincidence, and not unrelated to statistics you may already know: $\cos\theta$ between two variables' columns, once each column has been centered (its mean subtracted off), is exactly the Pearson correlation coefficient.
+</div>
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Orthogonal Vectors</span></span>
+Two vectors $\mathbf{u}$ and $\mathbf{v}$ are <strong>orthogonal</strong> (perpendicular) exactly when $\mathbf{u}\cdot\mathbf{v}=0$.
+</div>
+
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
+This follows directly from $\mathbf{u}\cdot\mathbf{v}=\|\mathbf{u}\|\|\mathbf{v}\|\cos\theta$ above: as long as neither vector is the zero vector, this product is zero exactly when $\cos\theta=0$, which happens exactly when $\theta=90°$. So "dot product equals zero" and "the vectors meet at a right angle" are indeed equivalent.
+</div>
+
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span> <span class="callout-title">How Aligned are Growth and Democracy?</span></span>
@@ -233,10 +248,6 @@ $$
 We take the inverse cosine to see that this corresponds to an angle of about $10^\circ$, meaning the two vectors point in nearly the same direction. Geometrically, this is what it looks like for two variables to move together: as columns of numbers, growth and democracy trace out almost the same shape across the six countries.
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-This is not a coincidence, and not unrelated to statistics you may already know: $\cos\theta$ between two variables' columns, once each column has been centered (its mean subtracted off), is exactly the Pearson correlation coefficient.
-</div>
 
 ## Matrix-Vector Multiplication
 
