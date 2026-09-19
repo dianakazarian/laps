@@ -5,8 +5,6 @@ _Overview: We derive the least-squares estimator from the normal equations, then
   Session 3 Slides (.pdf)
 </a>
 
-# Session 3
-
 ## Regression Notation, At  Long Last
 
 Up until this point, every system we have solved has been written as $A\mathbf{x}=\mathbf{b}$ (or $A\mathbf{w}=\mathbf{b}$), where $A$ is a square matrix. In other words, we have had equally as many equations as unknowns and elimination has always found a pivot in every row. Recall, however, that our USSR scholar's matrix has a slightly different shape (six rows, three columns). Indeed, for the most part, all matrices that political scientists use in applications will be longer than they are wide (i.e., more rows than columns).
