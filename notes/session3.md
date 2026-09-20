@@ -1,6 +1,6 @@
 _Overview: We derive the least-squares estimator from the normal equations, then quantify its uncertainty. In short, we witness the miracle of regression._
 
-<a class="resource-link" href="slides/laps_session_2.pdf" target="_blank" rel="noopener">
+<a class="resource-link" href="slides/laps_session_3.pdf" target="_blank" rel="noopener">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
   Session 3 Slides (.pdf)
 </a>
@@ -11,7 +11,7 @@ Up until this point, every system we have solved has been written as $A\mathbf{x
 
 How, then, do we work with systems of this nature? When we have more equations than unknowns, there is generally no single $\mathbf{x}$ that satisfies every equation simultaneously: once $\mathbf{x}$ is pinned down by as many equations as there are unknowns, the remaining equations have no freedom left to be satisfied by, and there's no reason at all that they should happen to hold anyway. This is the normal state of affairs for real data.
 
-The right response is not to abandon the equation, but to adjust our own expectations (ha). Rather than looking for an $\mathbf{x}$ that solves $A\mathbf{x}=\mathbf{b}$ exactly, we will look for the $\mathbf{x}$ that gets $A\mathbf{x}$ as close to $\mathbf{b}$ as any choice of $\mathbf{x}$ possibly could. Before making that idea precise, we will first introduce some new notation that is more in line with the convention. As you will see, it is completely analogous to all of the notation we have used so far.
+The right response is not to abandon the equation, but to adjust our own expectations. Rather than looking for an $\mathbf{x}$ that solves $A\mathbf{x}=\mathbf{b}$ exactly, we will look for the $\mathbf{x}$ that gets $A\mathbf{x}$ as close to $\mathbf{b}$ as any choice of $\mathbf{x}$ possibly could. Before making that idea precise, we will first introduce some new notation that is more in line with the convention. As you will see, it is completely analogous to all of the notation we have used so far.
 
 Our fundamental system is still $A\mathbf{x}=\mathbf{b}$ "under the hood." We are simply adjusting the letters. The coefficient matrix $A$ is now going to be called $X$ (the <em>design matrix</em>, built from the predictors); the unknown vector $\mathbf{x}$ is called $\beta$ (the weights being solved for); and the right-hand side $\mathbf{b}$ is called $y$ (the outcome being predicted). Nothing about how the system behaves is different: the renaming is happening only because $X$, $\beta$, $y$ are what every regression textbook and every piece of statistical software calls these same three objects (and who are we to flout tradition...).
 
@@ -50,7 +50,7 @@ Any two of these six equations allow us to solve for $w_1, w_2$ uniquely (this w
 
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Overdetermined System</span></span>
-A system $A\mathbf{x}=\mathbf{b}$ is overdetermined when it has more equations than unknowns. Such a system is consistent only when $\mathbf{b}$ happens to already lie in the column space of $A$ (a pure coincidence, so not something to expect from real data).
+A system $X\beta=y$ is overdetermined when it has more equations than unknowns. Such a system is consistent only when $y$ happens to already lie in the column space of $X$ (a pure coincidence, so not something to expect from real data).
 </div>
 
 ## Least Squares, Geometrically
@@ -95,7 +95,7 @@ for every other choice of $\beta$, with equality only when $\beta=\hat\beta$. Th
 
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Fitted Values</span></span>
-The point $X\hat\beta$ itself is called $\hat y$: the vector of <em>fitted</em> (or <em>predicted</em>) values, as opposed to $y$, the vector of actually observed outcomes:
+$X\hat\beta$ itself is called $\hat y$: the vector of <em>fitted</em> (or <em>predicted</em>) values, as opposed to $y$, the vector of actually observed outcomes:
 $$
 \hat y = X\hat\beta
 $$
@@ -253,7 +253,7 @@ For a fixed matrix $A$ and a random vector $\mathbf{z}$ with variance-covariance
 $$
 \text{Var}(A\mathbf{z}) = A\Sigma A^\top
 $$
-This is the matrix version of the familiar scalar fact $\text{Var}(az) = a^2\text{Var}(z)$. $A$ appears once on each side, playing the role $a$ and $a$ again play in the scalar version.
+This is the matrix version of the familiar scalar fact $\text{Var}(aZ) = a^2\text{Var}(Z)$. $A$ appears once on each side, playing the role $a$ and $a$ again play in the scalar version.
 </div>
 
 <div class="callout proposition">
@@ -283,7 +283,7 @@ $\sigma^2=\text{Var}(\varepsilon)$ can't be computed directly, for the same reas
 $$
 \hat\sigma^2 = \frac{1}{n-k}\sum_{i=1}^n e_i^2
 $$
-where $n$ is the number of observations and $k$ the number of predictors. The divisor $n-k$, rather than $n$, is the same kind of correction as the $n-1$ in the ordinary sample variance formula: each predictor estimated from the data costs one degree of freedom. This $\hat\sigma^2$, not the true (and permanently unknown) $\sigma^2$, is what actually gets plugged into $\text{SE}(\hat\beta_j)=\sqrt{\hat\sigma^2\left[(X^\top X)^{-1}\right]_{jj}}$ in practice. No statistical software has ever seen the real $\sigma^2$.
+where $n$ is the number of observations and $k$ the number of predictors. The divisor $n-k$, rather than $n$, is the same kind of correction as the $n-1$ in the ordinary sample variance formula: each predictor estimated from the data costs one degree of freedom. 
 </div>
 
 ## Standard Errors and Collinearity
