@@ -249,11 +249,11 @@ So $\hat\beta$ differs from the true $\beta$ by exactly $(X^\top X)^{-1}X^\top\v
 
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Variance of a Linear Transformation</span></span>
-For a fixed matrix $A$ and a random vector $\mathbf{z}$ with variance-covariance matrix $\Sigma$,
+For a fixed matrix $A$ and a random vector $\mathbf{z}$,
 $$
-\text{Var}(A\mathbf{z}) = A\Sigma A^\top
+\text{Var}(A\mathbf{z}) = A\,\text{Var}(\mathbf{z})\,A^\top
 $$
-This is the matrix version of the familiar scalar fact $\text{Var}(aZ) = a^2\text{Var}(Z)$. $A$ appears once on each side, playing the role $a$ and $a$ again play in the scalar version.
+This is the matrix version of the familiar scalar fact $\text{Var}(az) = a^2\text{Var}(z)$: $A$ appears once on each side, playing the role $a$ and $a$ again play in the scalar version.
 </div>
 
 <div class="callout proposition">

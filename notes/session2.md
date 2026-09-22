@@ -371,6 +371,27 @@ Geometrically, $|\det(A)|$ measures how much $A$ stretches or shrinks area (in 2
 
 The determinant formula grows more involved for larger matrices ($3\times3$ and up), and computing it directly becomes impractical by hand well before matrices reach the sizes political scientists actually work with. In practice, the determinant is rarely computed by the raw formula: it falls out of elimination almost "for free," as the product of the pivots (up to a sign that tracks row swaps). The formula above is worth knowing by hand for the $2\times2$ case specifically, since it's what makes the invertibility condition concrete for us.
 
+For the specific case of a $2\times2$ matrix, the determinant also affords us a shortcut in calculating the inverse, with no row operations needed at all.
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Inverse of a 2×2 matrix</span></span>
+For $A=\begin{bmatrix} a & b \\ c & d \end{bmatrix}$,
+$$
+A^{-1} = \frac{1}{\det(A)}\begin{bmatrix} d & -b \\ -c & a \end{bmatrix}, \qquad \det(A)=ad-bc
+$$
+</div>
+
+
+<div class="callout example">
+<span class="label"><span class="callout-type">Example</span></span>
+Let $A=\begin{bmatrix} 1 & 1 \\ 2 & 1 \end{bmatrix}$ again. First, $\det(A)=(1)(1)-(1)(2)=-1$. Then:
+$$
+A^{-1} = \frac{1}{-1}\begin{bmatrix} 1 & -1 \\ -2 & 1 \end{bmatrix} = \begin{bmatrix} -1 & 1 \\ 2 & -1 \end{bmatrix}
+$$
+</div>
+
+
+
 ## Closing the Loop
 
 Return once more to our scholar's question: what weight vector best explains democracy score in terms of GDP growth and EU integration? Session 1 gave us a way to *write* that question precisely, as $A\mathbf{w}=\mathbf{b}$ for some matrix $A$ and vector $\mathbf{b}$ built from the data. This session gave a way to *answer* it: Gaussian elimination solves the system directly, and when $A$ is square and full rank, $\mathbf{w}=A^{-1}\mathbf{b}$ answers it for any $\mathbf{b}$ at all. The determinant gives us something that is equivalent to that full-rank condition, but compressed into a single number: $\det(A)\neq0$, a pivot surviving in every row under elimination, $A^{-1}$ existing, and $A\mathbf{w}=\mathbf{b}$ having exactly one solution are all just different descriptions of the same underlying fact. This is why checking $\det(A)$ first can tell you, before doing any of the work, whether the rest of this section's machinery will even succeed.
