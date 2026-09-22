@@ -1,12 +1,3 @@
-# project template
+# Linear Algebra for Political Scientists (LAPS)
 
-## colors/themes etc.
-
-themes in styles.css
-box colors/shape in styles.css
-
-## note files
-
-note files imported in app.js
-
-thank you audrey for the template i owe you my life <3
+Find notes and slides [here](dianakazarian.github.io/laps/). Thank you Audrey for the beautiful template.
