@@ -46,7 +46,7 @@ $$
 \end{aligned}
 $$
 
-Any two of these six equations allow us to solve for $w_1, w_2$ uniquely (this would be an ordinary square system, solvable by the exact methods from Session 2). The problem is the other four. Once $\beta$ is fixed by, say, the first two countries, there is no reason at all the remaining four equations should also hold. They involve the same two unknowns, already spoken for, with no freedom left to satisfy anything new.
+Any two of these six equations allow us to solve for $w_1, w_2$ uniquely (this would be an ordinary square system, solvable by the exact methods from Session 2). The problem is the other four. As we know, once $\beta$ is fixed by, say, the first two countries, there is no reason at all the remaining four equations should also hold.
 
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Overdetermined System</span></span>
