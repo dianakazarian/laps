@@ -1,6 +1,6 @@
 _Overview: We ask what a matrix actually does to a vector, and find that a special few vectors (eigenvectors) only get stretched, never redirected. We then apply this fact to the variance-covariance matrix itself to distill many correlated variables down to the handful of dimensions that actually drive their variation (principal component analysis)._
 
-<a class="resource-link" href="slides/laps_session_3.pdf" target="_blank" rel="noopener">
+<a class="resource-link" href="slides/laps_session_4.pdf" target="_blank" rel="noopener">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
   Session 4 Slides (.pdf)
 </a>
