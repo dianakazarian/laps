@@ -230,6 +230,8 @@ Each respondent answers all six, so each respondent is naturally a row, and each
 
 With $6$ correlated columns (and, in a real survey, thousands of rows), keeping every respondent's answer to every question separately is a lot of raw data to interpret question-by-question. What we actually want is a compact summary of how many genuinely different "directions" of variation are there in these six answers. This is precisely what PCA offers us. A $6\times6$ $\Sigma$ is no longer practical to decompose by hand, but it's no different in principle from the $2\times2$ case.
 
+At this point, one may wonder: Why not just sum all the columns together and create a new index? Each of the columns are vectors of the same number of dimensions, after all. Bear in mind, though, that not all columns are independent, so we may inflate the index with
+redundant information. Moreover, summing the columns will reduce the information to a scalar. We are interested in what inherent dimensionality the data "inhabits." Thank you to Pascal Wallisch of NYU CDS for that particularly helpful bit of intuition.
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
