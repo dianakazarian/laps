@@ -1,4 +1,4 @@
-_Overview: We ask what a matrix actually does to space, and find that most vectors get sent in a new direction while a special few (eigenvectors) only get rescaled. We then turn this machinery on the data to distill many correlated variables down to a handful of dimensions (principal component analysis)._
+_Overview: We ask what a matrix actually does to a vector, and find that a special few vectors (eigenvectors) only get stretched, never redirected. We then apply this fact to the variance-covariance matrix itself to distill many correlated variables down to the handful of dimensions that actually drive their variation (principal component analysis)._
 
 <a class="resource-link" href="slides/laps_session_3.pdf" target="_blank" rel="noopener">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -164,7 +164,7 @@ We'll build this out first on the two variables we already know well — growth 
 
 Session 3 defined $\Sigma$ in general and showed its shape for growth and integration specifically:
 $$
-\Sigma = \begin{bmatrix} \text{Var(growth)} & \text{Cov(growth, integration)} \\\\ \text{Cov(integration, growth)} & \text{Var(integration)} \end{bmatrix}
+\Sigma = \begin{bmatrix} \text{Var(growth)} & \text{Cov(growth, integration)} \\ \text{Cov(integration, growth)} & \text{Var(integration)} \end{bmatrix}
 $$
 but never filled it in with numbers. Instead, we moved straight on to $\text{Var}(\hat\beta)$. This time, we will return to $\Sigma$ itself and compute it.
 
@@ -172,12 +172,12 @@ but never filled it in with numbers. Instead, we moved straight on to $\text{Var
 <span class="label"><span class="callout-type">Example</span></span>
 Using the six-country growth and integration data from Session 1, the variance-covariance matrix works out to
 $$
-\Sigma = \begin{bmatrix} \tfrac{18}{5} & \tfrac{31}{5} \\\\ \tfrac{31}{5} & \tfrac{377}{30} \end{bmatrix}
+\Sigma = \begin{bmatrix} \tfrac{18}{5} & \tfrac{31}{5} \\ \tfrac{31}{5} & \tfrac{377}{30} \end{bmatrix}
 $$
 
-**Eigenvalues.** As before, we solve $\det(\Sigma-\lambda I)=0$:
+As before, we calculate the eigenvalues by solving $\det(\Sigma-\lambda I)=0$:
 $$
-\det(\Sigma-\lambda I) = \begin{vmatrix} \tfrac{18}{5}-\lambda & \tfrac{31}{5} \\\\ \tfrac{31}{5} & \tfrac{377}{30}-\lambda \end{vmatrix} = \left(\tfrac{18}{5}-\lambda\right)\left(\tfrac{377}{30}-\lambda\right) - \left(\tfrac{31}{5}\right)^2 = 0
+\det(\Sigma-\lambda I) = \begin{vmatrix} \tfrac{18}{5}-\lambda & \tfrac{31}{5} \\ \tfrac{31}{5} & \tfrac{377}{30}-\lambda \end{vmatrix} = \left(\tfrac{18}{5}-\lambda\right)\left(\tfrac{377}{30}-\lambda\right) - \left(\tfrac{31}{5}\right)^2 = 0
 $$
 Simplifying, we get:
 $$
@@ -190,7 +190,7 @@ $$
 \lambda_1\approx15.73, \qquad \lambda_2\approx0.43
 $$
 
-**Eigenvector for $\lambda_1$.** Substitute $\lambda_1\approx15.73$ into $(\Sigma-\lambda_1 I)\mathbf{v}=0$ and use either row (they must agree, since $\det=0$ at an eigenvalue):
+To get the eigenvector corresponding to $\lambda_1$, we substitute $\lambda_1\approx15.73$ into $(\Sigma-\lambda_1 I)\mathbf{v}=0$ and use either row (they must agree, since $\det=0$ at an eigenvalue):
 $$
 \left(\tfrac{18}{5}-\lambda_1\right)v_1+\tfrac{31}{5}v_2=0 \quad\Longrightarrow\quad v_2\approx1.957\,v_1
 $$
@@ -199,24 +199,20 @@ $$
 \mathbf{v}_1 \approx (0.455,\,0.890)
 $$
 
-**Why only one eigenvector?** By the Spectral Theorem, $\Sigma$'s two eigenvectors must be orthogonal. In two dimensions, "orthogonal to $\mathbf{v}_1$" pins down the direction of $\mathbf{v}_2$ completely — it's just $\mathbf{v}_1$ rotated $90°$, $(-0.890,\,0.455)$ — with no separate system to solve. Solving one eigenvector by hand and rotating it is enough in the $2\times2$ case; it's only once there are three or more variables that each eigenvector genuinely needs its own calculation.
+By the Spectral Theorem, $\Sigma$'s two eigenvectors must be orthogonal. In two dimensions, "orthogonal to $\mathbf{v}_1$" pins down the direction of $\mathbf{v}_2$ completely, because it's just $\mathbf{v}_1$ rotated $90°$, $(-0.890,\,0.455)$ with no separate system to solve.
 
 </div>
 
-<div class="callout proposition">
-<span class="label"><span class="callout-type">Proposition</span></span>
+<div class="callout remark">
+<span class="label"><span class="callout-type">Remark</span></span>
 The eigenvectors of $\Sigma$ point along the axes of the ellipse traced out by the data's spread; the corresponding eigenvalues measure how stretched the data is along each axis.
+
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-$\mathbf{v}_1$'s entries are weights on growth and integration, and we can read them the way we've read every weighted combination this course: integration's weight ($0.890$) is nearly double growth's ($0.455$), so the direction our six countries differ *most* along leans on integration more than growth. This matches the Baltics-vs-South-Caucasus story from Session 1 — those two groups don't just differ, they differ overwhelmingly along one combined axis. $\lambda_1\gg\lambda_2$ confirms it: a country's position on $\mathbf{v}_1$ alone tells you almost everything about how it compares to the rest.
-</div>
+$\mathbf{v}_1$'s entries are weights on growth and integration, and we can read them the way we've read every weighted combination this course: integration's weight ($0.890$) is nearly double growth's ($0.455$), so the direction our six countries differ *most* along leans on integration more than growth.
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-Two variables collapsing to one dominant direction isn't especially impressive on its own — with only two variables, there was never much room to reduce. The real value of this method shows up with many correlated variables at once, where "one dominant direction" is a genuine discovery rather than a foregone conclusion. That direction, the eigenvector of $\Sigma$ with the largest eigenvalue, is given a name: the first principal component.
-</div>
+
+Two variables collapsing to one dominant direction isn't especially impressive on its own, of course. The actual utility of this method becomes clear when we have many correlated variables at once, which we take up below.
 
 ## Reducing Many Columns to a Few Dimensions
 
@@ -229,103 +225,87 @@ The real payoff of PCA shows up once there are more than two variables, and surv
 5. To what extent do you trust people of another religion?
 6. To what extent do you trust people of another nationality?
 
-Each respondent answers all six, so each respondent is naturally a row, and each question a column — exactly the design-matrix shape from Session 1, just with $6$ columns instead of $2$. There's no reason at all to expect these six columns to be uncorrelated: someone who reports high trust in strangers of another nationality is very likely to also report relatively high trust in people they meet for the first time in general. Whatever "trust" means to a given respondent, it seems to color several of these answers at once, not just one.
+Each respondent answers all six, so each respondent is naturally a row, and each question a column. There's no reason  to expect these six columns to be uncorrelated: someone who reports high trust in strangers of another nationality is very likely to also report relatively high trust in people they meet for the first time in general. 
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-With $6$ correlated columns (and, in a real survey, thousands of rows), keeping every respondent's answer to every question separately is a lot of raw data to interpret question-by-question. What we actually want is a compact summary: how many genuinely different "directions" of variation are there in these six answers, and how much of each respondent's overall trust disposition can be captured by a small number of scores rather than six? This is precisely the question PCA answers. A $6\times6$ $\Sigma$ is no longer practical to decompose by hand, but it's no different in principle from the $2\times2$ case — exactly the kind of computation software like R or Python's `numpy` performs instantly.
-</div>
+
+With $6$ correlated columns (and, in a real survey, thousands of rows), keeping every respondent's answer to every question separately is a lot of raw data to interpret question-by-question. What we actually want is a compact summary of how many genuinely different "directions" of variation are there in these six answers. This is precisely what PCA offers us. A $6\times6$ $\Sigma$ is no longer practical to decompose by hand, but it's no different in principle from the $2\times2$ case.
+
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
-Running this decomposition on the six WVS trust items (using correlations across respondents rather than raw covariances, since all six are on the same $1$–$4$ scale) might give eigenvalues like
+Running this decomposition on the six WVS trust items (using correlations across respondents rather than raw covariances, since all six are on the same $1$–$4$ scale) might yield eigenvalues like
 $$
 \lambda_1\approx3.2,\ \lambda_2\approx1.3,\ \lambda_3\approx0.5,\ \lambda_4\approx0.4,\ \lambda_5\approx0.3,\ \lambda_6\approx0.3
 $$
-(these sum to $6$, the number of standardized variables). $\lambda_1$ alone explains $\frac{3.2}{6}\approx53\%$ of the total variance, and $\lambda_1+\lambda_2$ together explain about $75\%$ — so two components, not six separate items, capture most of what these questions are telling us. The two leading eigenvectors might look like this:
+(these sum to $6$, the number of standardized variables). $\lambda_1$ alone explains $\frac{3.2}{6}\approx53\%$ of the total variance, and $\lambda_1+\lambda_2$ together explain about $75\%$, so two components, not six separate items, capture most of what these questions are telling us. The two leading eigenvectors might look like this:
 
 <table>
-<thead><tr><th>Item</th><th>PC1 loading</th><th>PC2 loading</th></tr></thead>
+<thead><tr><th>Item</th><th>Principal Component 1</th><th>Principal Component 2</th></tr></thead>
 <tbody>
 <tr><td>Family</td><td>0.30</td><td>0.55</td></tr>
 <tr><td>Neighborhood</td><td>0.35</td><td>0.50</td></tr>
-<tr><td>Known personally</td><td>0.40</td><td>0.10</td></tr>
-<tr><td>First-time strangers</td><td>0.45</td><td>$-0.15$</td></tr>
-<tr><td>Another religion</td><td>0.45</td><td>$-0.35$</td></tr>
-<tr><td>Another nationality</td><td>0.45</td><td>$-0.40$</td></tr>
+<tr><td>Known Personally</td><td>0.40</td><td>0.10</td></tr>
+<tr><td>First-Time Strangers</td><td>0.45</td><td>$-0.15$</td></tr>
+<tr><td>Another Religion</td><td>0.45</td><td>$-0.35$</td></tr>
+<tr><td>Another Nationality</td><td>0.45</td><td>$-0.40$</td></tr>
 </tbody>
 </table>
 </div>
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-It's worth seeing why this can't be done by hand, even in principle. $\Sigma$ here is a $6\times6$ correlation matrix (diagonal entries $=1$, since each item is standardized; off-diagonals are the pairwise correlations $\rho_{ij}$ between items):
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Variance Explained</span></span>
+The share of total variance captured by the $i$-th principal component is
 $$
-\Sigma - \lambda I = \begin{bmatrix}
-1-\lambda & \rho_{12} & \rho_{13} & \rho_{14} & \rho_{15} & \rho_{16} \\\\
-\rho_{12} & 1-\lambda & \rho_{23} & \rho_{24} & \rho_{25} & \rho_{26} \\\\
-\rho_{13} & \rho_{23} & 1-\lambda & \rho_{34} & \rho_{35} & \rho_{36} \\\\
-\rho_{14} & \rho_{24} & \rho_{34} & 1-\lambda & \rho_{45} & \rho_{46} \\\\
-\rho_{15} & \rho_{25} & \rho_{35} & \rho_{45} & 1-\lambda & \rho_{56} \\\\
-\rho_{16} & \rho_{26} & \rho_{36} & \rho_{46} & \rho_{56} & 1-\lambda
-\end{bmatrix}
+\text{Variance explained by PC}_i = \frac{\lambda_i}{\sum_{j=1}^{k}\lambda_j}
 $$
-Setting $\det(\Sigma-\lambda I)=0$ and expanding this determinant is exactly the same kind of computation as the $2\times2$ case — just fifteen correlations instead of one — but the result is a degree-$6$ polynomial in $\lambda$. Using the eigenvalues from the example above as its roots, it works out to
+and the cumulative variance explained by the first $m$ components is
 $$
-\lambda^6 - 6\lambda^5 + 11.74\lambda^4 - 10.18\lambda^3 + 4.38\lambda^2 - 0.92\lambda + 0.07 = 0
+\text{Cumulative variance explained} = \frac{\sum_{i=1}^{m}\lambda_i}{\sum_{j=1}^{k}\lambda_j}
 $$
-Where the $2\times2$ case reduced to a quadratic, solvable directly with the quadratic formula, no such formula exists for a degree-$6$ polynomial: by the Abel–Ruffini theorem, polynomials of degree $5$ or higher have no general algebraic solution at all. This isn't a matter of the arithmetic being tedious — there's no formula to grind through, regardless of patience. Software doesn't solve this polynomial symbolically either; it finds the eigenvalues numerically, directly from $\Sigma$, which is why a single line (`eigen(Sigma)` in R, `numpy.linalg.eig(Sigma)` in Python) returns all six eigenvalues and eigenvectors instantly, no matter how many variables are involved.
-</div>
-
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-This is what "latent dimension" means: none of the six original questions *is* PC1, and PC1 was never labeled "generalized trust" by anything in the data — that label is ours to propose, not something the eigenvector asserts. Read the loadings the way we've read every eigenvector so far: PC1's are all positive and roughly similar in size, so a respondent who trusts more, trusts more across the board — this is the dominant axis, exactly as $\lambda_1\gg\lambda_2$ suggested it would be.
-
-PC2 is more interesting: family and neighborhood load positively, while the three out-group items (strangers, another religion, another nationality) load negatively, with trust in people known personally sitting near zero in between. PC2 separates respondents who trust close, familiar circles but not outsiders from respondents whose trust extends more evenly to strangers and out-groups — a distinction political scientists studying trust already have a name for: particularized versus generalized trust. PCA didn't know that literature existed; it only found that this is the second-largest direction along which respondents' answers actually vary. That the result lines up with an established theoretical distinction is a genuinely useful check on that theory — but, as before, the *label* "particularized vs. generalized trust" is the researcher's interpretive layer on top of a computation that only ever saw six correlated numbers per respondent.
+where $k$ is the total number of variables (and thus eigenvalues). Since the denominator is the same fixed total in both cases, keeping only the first $m$ components means accepting the loss of whatever fraction of variance falls outside that sum.
 </div>
 
 ## Interpreting Principal Components
 
-An eigenvector's entries are weights, so a PC is interpreted exactly the way we've interpreted a weighted combination all course: look at the sign and relative size of each entry.
+An eigenvector's entries are weights, so a principal component is interpreted exactly the way we've interpreted a weighted combination all course: look at the sign and relative size of each entry.
+
+<div class="callout definition">
+<span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Loading</span></span>
+A component's loading on a given variable is that variable's entry in the corresponding eigenvector. A loading's sign tells you whether that variable moves with the component or against it; its magnitude tells you how much that variable drives the component, relative to the others.
+</div>
+
+Look at the loadings table from the six-item example. PC1's entries are all positive and roughly similar in size (0.30 to 0.45): a respondent who scores high on PC1 trusts more across every item, family included. We can interpret this as a measure of  "generalized trust."
+
+PC2 is a bit more interesting. Family (0.55) and neighborhood (0.50) load positively, while the three out-group items (first-time strangers ($-0.15$), another religion ($-0.35$), another nationality ($-0.40$)) load negatively; trust in people known personally (0.10) sits near zero, barely tilting either way. So a respondent high on PC2 trusts close, familiar circles more than they trust outsiders; a respondent low (negative) on PC2 extends trust more evenly to strangers and out-groups. This can be read as a measure of particularized versus generalized trust.
+
+The *labels*, though, are our interpretive layer on top of the numbers. What the eigenvectors themselves guarantee is only that PC1 and PC2 are the two directions capturing the most variance, and that they're orthogonal to each other. We are the ones who create the substantive story based on the signs and magnitudes of the loadings.
+</div>
 
 <div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-For our two-variable $\mathbf{v}_1\approx(0.455,\,0.890)$: both entries are positive, so higher growth and higher integration both push a country in the same direction along PC1 — countries don't trade one off against the other on this axis, they move together. The relative sizes say integration carries more of the weight. As with the WVS trust example above, it's tempting to name this axis something like "reform intensity" — but that label is the researcher's interpretive choice, layered on top of a computation that has no idea what growth or integration substantively mean.
+<span class="label"><span class="callout-type">Words of Caution</span></span>
 
-Two things to watch for when interpreting a PC in practice:
-- **Sign is only relative.** $-\mathbf{v}_1$ is an equally valid eigenvector (it solves $\Sigma\mathbf{v}=\lambda\mathbf{v}$ just as well), so whether high PC1 means "more reform" (or "more generalized trust") or the reverse is a labeling choice, not something the math determines.
-- **Scale matters before you even get to $\Sigma$.** A variable measured in bigger raw units (GDP per capita in dollars, say, versus a 1–4 survey scale) will dominate the variance and can hijack PC1 for reasons that have nothing to do with substantive importance — which is why PCA is usually run on standardized (unit-variance) variables in practice.
+- Sign is relative! $-\mathbf{v}$ is just as valid an eigenvector as $\mathbf{v}$ (it solves $\Sigma\mathbf{v}=\lambda\mathbf{v}$ equally well), so whether "high" on a component means one thing or its exact opposite is a labeling choice you're making, not something the math determines.
+- A name for a component is your interpretation. PCA only finds directions of shared variation: it has no idea what those directions represent. Figuring out the substantive meaning of a component, if it has one at all, is work the researcher does afterward, not something the eigenvector asserts.
+- A variable with bigger raw units will mechanically dominate the loadings, which is why PCA is typically run on standardized variables (a correlation matrix) rather than raw covariances.
+- Components are guaranteed orthogonal by construction (the Spectral Theorem), but that's a mathematical fact about the vectors, not a guarantee that the two "ideas" they seem to represent are unrelated in any deeper sense.
 </div>
+
 
 ## Regression vs. PCA
 
-Both regression and PCA reduce several variables down to one number via a weighted sum, and both come from finding an eigenvector-like solution of some matrix. It's worth being precise about how they differ, since it's easy to conflate them.
+Both regression and PCA reduce several variables down to one number via a weighted sum, and both come from finding an eigenvector-like solution of some matrix. However, they are intended to answer fundamentally different questions about the data.
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-Regression's $\hat\beta$ answers: <em>which weighted combination of growth and integration best predicts democracy score?</em> It needs an outcome variable, $y$, to check its predictions against — without $y$, there's nothing for $\hat\beta$ to be "best" at. PCA's first principal component answers a different question entirely: <em>which direction captures the most variation within growth and integration themselves?</em> (Or, in the trust-battery example, within the six WVS trust items themselves.) No outcome variable enters anywhere in that computation — $\Sigma$ is built purely from the predictors, with democracy score, or any downstream outcome, never mentioned.
-</div>
+Regression's $\hat\beta$ answers: <em>which weighted combination of growth and integration best predicts democracy score?</em> It needs an outcome variable, $y$, to check its predictions against. Without $y$, there's nothing for $\hat\beta$ to be "best" at. PCA's first principal component answers: <em>which direction captures the most variation within growth and integration themselves?</em> (Or, in the trust-battery example, within the six WVS trust items themselves.) No outcome variable enters anywhere in that computation because $\Sigma$ is built purely from the predictors, with democracy score, or any downstream outcome, never mentioned.
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-This is also visible in what each method optimizes. $\hat\beta$ minimizes $\|y-X\beta\|^2$ — distance to an external target. The first principal component maximizes the variance of the projected data — spread within the data's own geometry, nothing external at all. One is a supervised question (predict something), the other unsupervised (summarize something) — and it's not a coincidence that both reduce to solving an eigenvalue-flavored problem with a symmetric matrix ($X^\top X$ for regression, $\Sigma$ for PCA): whenever a question reduces to "find the best single direction," a symmetric matrix and its eigenvectors tend to be exactly the tool that answers it.
-</div>
+This is also visible in what each method optimizes. $\hat\beta$ minimizes $\|y-X\beta\|^2$, or the distance to an external target. The first principal component maximizes the variance of the projected data: spread within the data's own geometry, nothing external at all. One is a supervised question (predict something), the other unsupervised (summarize something).
 
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-For the scholar's specific project, this distinction has a direct payoff: PCA is the right tool for building a defensible <em>index</em> (Western alignment, say, as a single composite variable to use elsewhere — or a "generalized trust" score built from the six WVS items above), while regression is the right tool for asking whether that index, or its component variables, actually <em>predicts</em> something of interest, like democratization, or whether generalized trust predicts institutional support. They are not competing methods for the same question — they are the correct methods for two genuinely different questions, and a lot of applied confusion comes from reaching for one when the other is what the question actually calls for.
-</div>
 
 
 ## Course Wrap-Up
 
-Four sessions ago, this course opened with a USSR scholar noticing that the South Caucasus and the Baltics differed in both wealth and democracy — and, on top of that, differed in their relationship with the West. Answering the question that observation raised turned out to require building an entire toolkit from scratch, one piece at a time, each piece introduced exactly when the story needed it rather than all at once up front.
+Four sessions ago, this course opened with a USSR scholar noticing that the South Caucasus and the Baltics differed in both wealth and democracy, and, on top of that, differed in their relationship with the West. Thinking quantitatively about that observation required us to build an entire toolkit from scratch.
 
 
-Session 1 gave the raw material: vectors as data, matrices as datasets, the dot product as a weighted sum, and the geometric fact — cosine, orthogonality — that a weighted sum secretly encodes an angle. Session 2 gave the machinery to actually solve something built from that vocabulary: Gaussian elimination, rank, the inverse, the determinant — tools for square systems specifically. Session 3 closed the gap those tools left open: real data is never square, so we swapped "solve exactly" for "get as close as possible," derived that closeness geometrically as orthogonal projection, and watched it collapse into the normal equations — the exact same square-system machinery from Session 2, applied to $X^\top X$ instead of $X$ itself. This session took the same variance-covariance matrix used to quantify $\hat\beta$'s uncertainty and asked what it looks like geometrically, which led straight to eigenvectors, the spectral theorem, and principal component analysis.
+Session 1 gave us the raw material: vectors as data, matrices as datasets, the dot product as a weighted sum, and the geometric fact (cosine, orthogonality) that a weighted sum encodes an angle. Session 2 gave us the machinery to actually solve something built from that vocabulary: Gaussian elimination, rank, the inverse, the determinant, which are tools intended for square systems specifically. Session 3 addressed the fact that real data is never square, so we swapped "solve exactly" for "get as close as possible," derived that closeness geometrically as orthogonal projection, and derived the normal equations. In this session, we took the same variance-covariance matrix used to quantify $\hat\beta$'s uncertainty and asked what it looks like geometrically, which led straight to eigenvectors, the spectral theorem, and principal component analysis.
 
-
-<div class="callout remark">
-<span class="label"><span class="callout-type">Remark</span></span>
-Notice how rarely a genuinely new mathematical object was introduced after Session 1. Nearly everything since has been the same handful of ideas — the dot product, the transpose, $M^\top M$'s symmetry, the determinant — recombined and reapplied to a new question. The normal equations were session 2's inverse, aimed at $X^\top X$. Standard errors were the same $(X^\top X)^{-1}$, reused. PCA's eigenvectors were the same symmetric-matrix machinery that made the normal equations solvable in the first place, pointed at $\Sigma$ instead. Linear algebra earns its place in a political scientist's toolkit precisely because of this reuse: a small, fixed set of operations turns out to answer a surprisingly wide range of applied questions.
-</div>
+Linear algebra is absolutely central to quantitative political science. Any question about how variables move together (correlate, predict, cluster, reduce to a common cause) is, at its core, a question about how vectors sit relative to one another in space: their lengths, the angles between them, and the directions along which they stretch. Thinking geometrically about data, in other words, is not a niche skill for "methods people," but simply what it means to reason quantitatively about politics at all.
