@@ -139,7 +139,7 @@ Notice that $\mathbf{v}_1=(1,1)$ and $\mathbf{v}_2=(1,-1)$ are orthogonal to eac
 
 ### Symmetric Matrices Are Special
 
-$A=\begin{bmatrix}2&1\\1&2\end{bmatrix}$ is a symmetric matrix ($A^\top=A$), and its eigenvectors came out perpendicular. Indeed, this is a general property of symmetric matrices.
+$A=\begin{bmatrix}2&1\\1&2\end{bmatrix}$ is a symmetric matrix ($A^\top=A$), and its eigenvectors turned out to be perpendicular. Indeed, this is a general property of symmetric matrices.
 
 
 
@@ -152,15 +152,17 @@ If $S$ is a symmetric matrix, then:
 </ol>
 </div>
 
-This is exactly what we saw with $A=\begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}$: eigenvalues $\lambda=1,3$ (both real, no surprise needed there), and eigenvectors $(1,1)$, $(1,-1)$, which dot to zero. The Spectral Theorem guarantees this result for *any* symmetric matrix.
+This is exactly what we saw with $A=\begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}$: eigenvalues $\lambda=1,3$ (both real), and eigenvectors $(1,1)$, $(1,-1)$, which dot to zero. The Spectral Theorem guarantees this result for *any* symmetric matrix.
 
 
 
 ## Principal Component Analysis
 
-Every matrix we've worked with since Session 3 has come with a designated outcome we cared about: democracy scores, predicted by growth and integration. PCA answers a different kind of question, with no outcome variable at all: given a set of variables that are correlated with each other, is there a smaller number of "directions" that capture most of what's actually going on in the data? This comes up constantly in political science — survey batteries with a dozen related items, or a dataset like V-Dem with dozens of separately measured but substantively overlapping indicators. PCA takes such variables and finds the combination(s) of them that vary the most, so that a handful of numbers can stand in for many.
+Every matrix we've worked with since Session 2 has come with a designated outcome we cared about: democracy scores, predicted by growth and integration. PCA answers a different kind of question, which does not involve an outcome variable: given a set of variables that are correlated with each other, is there a smaller number of "directions" that capture most of the variation in the data? 
 
-We'll build this out first on the two variables we already know well — growth and integration — where the answer is checkable by eye, before turning to a case with more variables where the payoff is bigger.
+This comes up constantly in political science: survey batteries with a dozen correlated items, or a dataset like V-Dem with dozens of separately measured but substantively overlapping indicators. PCA takes variables like these and finds the combination(s) of them that vary the most, so that we can reduce the data to a handful of dimensions.
+
+We will see this for the first time on the two variables we already know well: growth and integration. Then, we'll turn to a case with more variables where the payoff is bigger.
 
 Session 3 defined $\Sigma$ in general and showed its shape for growth and integration specifically:
 $$
@@ -212,11 +214,11 @@ The eigenvectors of $\Sigma$ point along the axes of the ellipse traced out by t
 $\mathbf{v}_1$'s entries are weights on growth and integration, and we can read them the way we've read every weighted combination this course: integration's weight ($0.890$) is nearly double growth's ($0.455$), so the direction our six countries differ *most* along leans on integration more than growth.
 
 
-Two variables collapsing to one dominant direction isn't especially impressive on its own, of course. The actual utility of this method becomes clear when we have many correlated variables at once, which we take up below.
+Reducing two variables to one dominant direction isn't particularly impressive on its own, of course. The actual utility of this method becomes clear when we have many correlated variables at once, which we take up below.
 
 ## Reducing Many Columns to a Few Dimensions
 
-The real payoff of PCA shows up once there are more than two variables, and survey data is where political scientists run into this constantly. Consider a battery of questions from the World Values Survey, all asking about trust in different kinds of people:
+Survey data is an example of a setting where political scientists tend to run into highly correlated variables. Consider a battery of questions from the World Values Survey, which all ask about the respondent's levels of trust:
 
 1. To what extent do you trust people in your family?
 2. To what extent do you trust people in your neighborhood?
@@ -225,17 +227,17 @@ The real payoff of PCA shows up once there are more than two variables, and surv
 5. To what extent do you trust people of another religion?
 6. To what extent do you trust people of another nationality?
 
-Each respondent answers all six, so each respondent is naturally a row, and each question a column. There's no reason  to expect these six columns to be uncorrelated: someone who reports high trust in strangers of another nationality is very likely to also report relatively high trust in people they meet for the first time in general. 
+Each respondent answers all six questions, so each respondent is naturally a row, and each question a column. Someone who reports high trust in strangers of another nationality is very likely to also report relatively high trust in people they meet for the first time in general. So we have a reason to suspect strong collinearity between our columns.
 
 
-With $6$ correlated columns (and, in a real survey, thousands of rows), keeping every respondent's answer to every question separately is a lot of raw data to interpret question-by-question. What we actually want is a compact summary of how many genuinely different "directions" of variation are there in these six answers. This is precisely what PCA offers us. A $6\times6$ $\Sigma$ is no longer practical to decompose by hand, but it's no different in principle from the $2\times2$ case.
+With $6$ correlated columns (and, in a real survey, thousands of rows), keeping every respondent's answer to every question separately is a lot of raw data to interpret question-by-question. What would be very helpful, then, is a compact summary of how many genuinely different "directions" of variation are there in these six answers. This is precisely what PCA offers us.
 
 At this point, one may wonder: Why not just sum all the columns together and create a new index? All of the columns are vectors of the same number of dimensions, after all. Bear in mind, though, that not all columns are independent, so we may inflate the index with
-redundant information. Moreover, summing the columns will reduce the information to a scalar. We are interested in what inherent dimensionality the data "inhabit." Thank you to Pascal Wallisch of NYU CDS for that particularly helpful bit of intuition.
+redundant information. Moreover, summing the columns will reduce the information to a scalar (one trust "score" per respondent). We are interested in what inherent dimensionality the data "inhabit." Thank you to Pascal Wallisch of NYU CDS for that particularly helpful bit of intuition.
 
 <div class="callout example">
 <span class="label"><span class="callout-type">Example</span></span>
-Running this decomposition on the six WVS trust items (using correlations across respondents rather than raw covariances, since all six are on the same $1$–$4$ scale) might yield eigenvalues like
+A $6\times6$ $\Sigma$ is no longer practical to decompose by hand, but it's no different in principle from the $2\times2$ case. Running this decomposition on the six WVS trust items (using correlations across respondents rather than raw covariances, since all six are on the same $1$–$4$ scale) might yield eigenvalues like
 $$
 \lambda_1\approx3.2,\ \lambda_2\approx1.3,\ \lambda_3\approx0.5,\ \lambda_4\approx0.4,\ \lambda_5\approx0.3,\ \lambda_6\approx0.3
 $$
@@ -269,7 +271,7 @@ where $k$ is the total number of variables (and thus eigenvalues). Since the den
 
 ## Interpreting Principal Components
 
-An eigenvector's entries are weights, so a principal component is interpreted exactly the way we've interpreted a weighted combination all course: look at the sign and relative size of each entry.
+An eigenvector's entries are weights, so a principal component is interpreted exactly the way we have interpreted a weighted combination all course: look at the **sign** and **relative size** of each entry.
 
 <div class="callout definition">
 <span class="label"><span class="callout-type">Definition</span> <span class="callout-title">Loading</span></span>
@@ -286,10 +288,10 @@ The *labels*, though, are our interpretive layer on top of the numbers. What the
 <div class="callout remark">
 <span class="label"><span class="callout-type">Words of Caution</span></span>
 
-- Sign is relative! $-\mathbf{v}$ is just as valid an eigenvector as $\mathbf{v}$ (it solves $\Sigma\mathbf{v}=\lambda\mathbf{v}$ equally well), so whether "high" on a component means one thing or its exact opposite is a labeling choice you're making, not something the math determines.
-- A name for a component is your interpretation. PCA only finds directions of shared variation: it has no idea what those directions represent. Figuring out the substantive meaning of a component, if it has one at all, is work the researcher does afterward, not something the eigenvector asserts.
+- Sign is relative! $-\mathbf{v}$ is just as valid an eigenvector as $\mathbf{v}$ (it solves $\Sigma\mathbf{v}=\lambda\mathbf{v}$ equally well), so whether "high" on a component means one thing or its exact opposite is a labeling choice you have to make.
+- A name for a component is your interpretation. PCA only finds directions of shared variation: it has no idea what those directions represent. Figuring out the substantive meaning of a component, if it has one at all, is work the researcher does afterward.
 - A variable with bigger raw units will mechanically dominate the loadings, which is why PCA is typically run on standardized variables (a correlation matrix) rather than raw covariances.
-- Components are guaranteed orthogonal by construction (the Spectral Theorem), but that's a mathematical fact about the vectors, not a guarantee that the two "ideas" they seem to represent are unrelated in any deeper sense.
+- Components are guaranteed orthogonal by construction (the Spectral Theorem), but this does notguarantee that the two "ideas" they seem to represent are unrelated in any deeper sense.
 </div>
 
 
@@ -299,7 +301,7 @@ Both regression and PCA reduce several variables down to one number via a weight
 
 Regression's $\hat\beta$ answers: <em>which weighted combination of growth and integration best predicts democracy score?</em> It needs an outcome variable, $y$, to check its predictions against. Without $y$, there's nothing for $\hat\beta$ to be "best" at. PCA's first principal component answers: <em>which direction captures the most variation within growth and integration themselves?</em> (Or, in the trust-battery example, within the six WVS trust items themselves.) No outcome variable enters anywhere in that computation because $\Sigma$ is built purely from the predictors, with democracy score, or any downstream outcome, never mentioned.
 
-This is also visible in what each method optimizes. $\hat\beta$ minimizes $\|y-X\beta\|^2$, or the distance to an external target. The first principal component maximizes the variance of the projected data: spread within the data's own geometry, nothing external at all. One is a supervised question (predict something), the other unsupervised (summarize something).
+We can also see examine what each method is intended to optimize. $\hat\beta$ minimizes $\|y-X\beta\|^2$, or the distance to an external target $y$. The first principal component maximizes the variance of the projected data, $X$. One is a supervised question (predict something), the other unsupervised (summarize something).
 
 
 
